@@ -1,5 +1,6 @@
 package com.example.PrepPilot.AI.controller;
 
+import com.example.PrepPilot.AI.dto.LoginRequest;
 import com.example.PrepPilot.AI.dto.RegisterRequest;
 import com.example.PrepPilot.AI.dto.RegisterResponse;
 import com.example.PrepPilot.AI.dto.UserResponse;
@@ -24,6 +25,11 @@ public class AuthController {
         UserResponse response=authService.registerUser(request);
         return  ResponseEntity.status(HttpStatus.CREATED).body(response);
 
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<String[]> login(@RequestBody LoginRequest loginRequest){
+        String[] tokens = authService.Login(loginRequest);
     }
 
 
