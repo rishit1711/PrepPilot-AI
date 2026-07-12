@@ -1,10 +1,10 @@
 package com.example.PrepPilot.AI.security;
 
 import com.example.PrepPilot.AI.dto.RegisterRequest;
-import com.example.PrepPilot.AI.dto.RegisterResponse;
+import com.example.PrepPilot.AI.dto.UserResponse;
 
 public class AuthService {
-    public RegisterResponse registerUser(RegisterRequest request) {
+    public UserResponse registerUser(RegisterRequest request) {
 
     }
 }

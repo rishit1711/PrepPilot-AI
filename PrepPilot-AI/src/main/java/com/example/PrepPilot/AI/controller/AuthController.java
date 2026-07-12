@@ -2,6 +2,7 @@ package com.example.PrepPilot.AI.controller;
 
 import com.example.PrepPilot.AI.dto.RegisterRequest;
 import com.example.PrepPilot.AI.dto.RegisterResponse;
+import com.example.PrepPilot.AI.dto.UserResponse;
 import com.example.PrepPilot.AI.security.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<RegisterResponse> signUpUser(@RequestBody RegisterRequest request){
-        RegisterResponse response=authService.registerUser(request);
+    public ResponseEntity<UserResponse> signUpUser(@RequestBody RegisterRequest request){
+        UserResponse response=authService.registerUser(request);
         return  ResponseEntity.status(HttpStatus.CREATED).body(response);
 
     }
