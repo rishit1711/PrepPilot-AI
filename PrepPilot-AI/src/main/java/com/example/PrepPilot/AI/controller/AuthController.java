@@ -1,10 +1,12 @@
 package com.example.PrepPilot.AI.controller;
 
 import com.example.PrepPilot.AI.dto.LoginRequest;
+import com.example.PrepPilot.AI.dto.LoginResponse;
 import com.example.PrepPilot.AI.dto.RegisterRequest;
-import com.example.PrepPilot.AI.dto.RegisterResponse;
 import com.example.PrepPilot.AI.dto.UserResponse;
 import com.example.PrepPilot.AI.security.AuthService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +30,15 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<String[]> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse httpServletResponse){
         String[] tokens = authService.Login(loginRequest);
+
+        Cookie cookie = new Cookie("refreshToken",tokens[1]);
+        cookie.setHttpOnly(true);
+        httpServletResponse.addCookie(cookie);
+        return ResponseEntity.ok(new LoginResponse(tokens[0]));
+
+
     }
 
 
