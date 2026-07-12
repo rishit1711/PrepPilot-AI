@@ -1,12 +1,14 @@
 package com.example.PrepPilot.AI.dto;
 
-import com.example.PrepPilot.AI.entity.enums.Role;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-public record UserResponse(
-
-        Long id,
-        String name,
-        String email,
-        Role role
-) {
+@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class UserResponse {
+    private Long id;
+    private String name;
+    private String email;
 }
