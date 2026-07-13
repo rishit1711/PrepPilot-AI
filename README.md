@@ -1,4 +1,4 @@
-# 🚀 InterviewPilot AI
+# 🚀 PrepPilot AI
 
 > **An Adaptive AI Interview Intelligence Platform** that helps candidates prepare for technical interviews through personalized document analysis, Retrieval-Augmented Generation (RAG), adaptive mock interviews, resume claim verification, and evidence-based feedback.
 
