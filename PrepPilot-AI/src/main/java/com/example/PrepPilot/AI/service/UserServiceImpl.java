@@ -1,6 +1,7 @@
 package com.example.PrepPilot.AI.service;
 
 import com.example.PrepPilot.AI.entity.User;
+import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
 import com.example.PrepPilot.AI.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +12,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(()->new RuntimeException("User With this Id does not exist"));
+        return userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User With this Id does not exist"));
     }
 
     @Override

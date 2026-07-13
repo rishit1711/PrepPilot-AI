@@ -5,6 +5,7 @@ import com.example.PrepPilot.AI.dto.RegisterRequest;
 import com.example.PrepPilot.AI.dto.UserResponse;
 import com.example.PrepPilot.AI.entity.User;
 import com.example.PrepPilot.AI.entity.enums.Role;
+import com.example.PrepPilot.AI.exception.DuplicateEmailException;
 import com.example.PrepPilot.AI.mapper.UserMapper;
 import com.example.PrepPilot.AI.repository.UserRepository;
 import com.example.PrepPilot.AI.utils.JwtService;
@@ -27,7 +28,7 @@ public class AuthService {
 
 
         if(userRepository.existsByEmail(request.getEmail())){
-            throw new RuntimeException("User with this Email Already Registered");
+            throw new DuplicateEmailException("User with this Email Already Registered");
         }
 
         User user = userMapper.toEntity(request);
