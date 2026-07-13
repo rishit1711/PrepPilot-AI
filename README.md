@@ -8,7 +8,7 @@
 
 ## 📖 Overview
 
-InterviewPilot AI is a backend-first AI platform designed to simulate realistic technical interviews instead of acting as just another chatbot.
+PrepPilot AI is a backend-first AI platform designed to simulate realistic technical interviews instead of acting as just another chatbot.
 
 The platform analyzes resumes, job descriptions, and supporting documents to generate personalized interview experiences, verify claimed skills, evaluate responses with explainable feedback, and recommend a customized learning roadmap.
 
@@ -42,7 +42,7 @@ The platform analyzes resumes, job descriptions, and supporting documents to gen
 - Qdrant (Vector Database)
 
 ### AI
-- Gemini API
+- Gemini API 
 - Retrieval-Augmented Generation (RAG)
 
 ### Frontend
@@ -99,7 +99,7 @@ PostgreSQL + Vector DB
 
 ## 🌟 What Makes It Different?
 
-Unlike traditional interview preparation platforms, InterviewPilot AI focuses on:
+Unlike traditional interview preparation platforms, PrepPilot AI focuses on:
 
 - Adaptive interview flow based on candidate performance
 - Resume claim verification instead of random questioning
