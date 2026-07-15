@@ -19,7 +19,7 @@ public class DashboardService {
         Profile profile = profileRepository.findByUser(user);
 
         int completed = 0;
-        int total = 7;
+        int total = 8;
 
         if (profile.getFullName() != null && !profile.getFullName().isBlank()) completed++;
         if (profile.getAbout() != null && !profile.getAbout().isBlank()) completed++;
@@ -27,6 +27,7 @@ public class DashboardService {
         if (profile.getTargetRole() != null && !profile.getTargetRole().isBlank()) completed++;
         if (profile.getGithubUrl() != null && !profile.getGithubUrl().isBlank()) completed++;
         if (profile.getLinkedinUrl() != null && !profile.getLinkedinUrl().isBlank()) completed++;
+        if (profile.getPortfolioUrl() != null && !profile.getPortfolioUrl().isBlank()) completed++;
         if (profile.getSkills() != null && !profile.getSkills().isEmpty()) completed++;
 
         int profileCompletion = (completed * 100) / total;
