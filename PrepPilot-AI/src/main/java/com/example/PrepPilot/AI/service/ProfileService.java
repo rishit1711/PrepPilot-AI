@@ -10,4 +10,6 @@ public interface ProfileService {
     ProfileResponse GenerateProfile(CreateProfileRequest proileRequest , User user);
 
     List<ProfileResponse> GetAllProfile(User user);
+
+    ProfileResponse getMyProfile(User user,Long id);
 }

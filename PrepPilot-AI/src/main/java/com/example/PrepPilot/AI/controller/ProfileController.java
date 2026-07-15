@@ -31,6 +31,11 @@ public class ProfileController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(profileService.GetAllProfile(user));
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfileResponse> getProfileById(@PathVariable Long id){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(profileService.getMyProfile(user,id));
+    }
 
 
 

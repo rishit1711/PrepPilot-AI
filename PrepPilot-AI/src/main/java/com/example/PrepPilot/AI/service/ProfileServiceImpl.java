@@ -5,9 +5,11 @@ import com.example.PrepPilot.AI.dto.ProfileResponse;
 import com.example.PrepPilot.AI.entity.Profile;
 import com.example.PrepPilot.AI.entity.User;
 import com.example.PrepPilot.AI.exception.AlreadyExistException;
+import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
 import com.example.PrepPilot.AI.mapper.ProfileMapper;
 import com.example.PrepPilot.AI.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -57,5 +59,13 @@ public class ProfileServiceImpl implements  ProfileService{
         List<Profile> profileList = profileRepository.findAll();
         return profileList.stream().map(Profile-> profileMapper.toProfileResponse(Profile)).toList();
 
+    }
+
+    @Override
+    public ProfileResponse getMyProfile(User user, Long id) {
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile does not exist"));
+
+        return profileMapper.toProfileResponse(profile);
     }
 }
