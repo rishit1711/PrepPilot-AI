@@ -8,10 +8,10 @@ import com.example.PrepPilot.AI.exception.AlreadyExistException;
 import com.example.PrepPilot.AI.mapper.ProfileMapper;
 import com.example.PrepPilot.AI.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +35,8 @@ public class ProfileServiceImpl implements  ProfileService{
                                                 .portfolioUrl(proileRequest.portfolioUrl())
                                                         .targetRole(proileRequest.targetRole())
                 .skills(proileRequest.skills())
+                .experience(proileRequest.experience())
+
                 .user(user)
                                                                 .
                 build();
@@ -45,6 +47,15 @@ public class ProfileServiceImpl implements  ProfileService{
 
 
 
+
+    }
+
+    @Override
+    // check lagana ki sirf admin hi sare profile dekh paye
+    public List<ProfileResponse> GetAllProfile(User user) {
+
+        List<Profile> profileList = profileRepository.findAll();
+        return profileList.stream().map(Profile-> profileMapper.toProfileResponse(Profile)).toList();
 
     }
 }

@@ -4,8 +4,7 @@ import java.util.Set;
 
 public record ProfileResponse(
         Long id,
-        String email,
-        String name,
+        String fullName,
         String about,
         Integer experience,
         String targetRole,

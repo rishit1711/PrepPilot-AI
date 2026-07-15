@@ -7,15 +7,15 @@ import com.example.PrepPilot.AI.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.PublicKey;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile")
-public class UserProfileController {
+public class ProfileController {
 
     private final ProfileService profileService;
 
@@ -26,6 +26,12 @@ public class UserProfileController {
         return ResponseEntity.ok().body(profileService.GenerateProfile(proileRequest,user));
 
     }
+    @GetMapping
+    public ResponseEntity<List<ProfileResponse>> getAllProfile(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(profileService.GetAllProfile(user));
+    }
+
 
 
 

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.time.LocalDateTime;
 
@@ -73,6 +74,17 @@ public class GlobalExceptionHandler {
                 .timeStamp(LocalDateTime.now()).build();
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+    @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
+    public ResponseEntity<ErrorResponse> handleException(HttpServerErrorException.InternalServerError ex, HttpServletRequest request){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("Server Issue")
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .path(request.getRequestURI())
+                .message(ex.getMessage())
+                .timeStamp(LocalDateTime.now()).build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
 
