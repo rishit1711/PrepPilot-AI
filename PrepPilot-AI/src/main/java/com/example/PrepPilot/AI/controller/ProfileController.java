@@ -44,8 +44,7 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.UpdateProfile(id,profileRequest,user));
     }
 
-    @GetMapping("/dashboard")
-    public
+
 
 
 
