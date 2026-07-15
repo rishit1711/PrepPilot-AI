@@ -2,8 +2,10 @@ package com.example.PrepPilot.AI.mapper;
 
 import com.example.PrepPilot.AI.dto.CreateProfileRequest;
 import com.example.PrepPilot.AI.dto.ProfileResponse;
+import com.example.PrepPilot.AI.entity.Profile;
 import org.mapstruct.Mapper;
-import org.springframework.context.annotation.Profile;
+;
+
 
 @Mapper(componentModel = "spring")
 

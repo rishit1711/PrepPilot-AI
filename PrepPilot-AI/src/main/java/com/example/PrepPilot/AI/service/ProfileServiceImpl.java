@@ -40,6 +40,7 @@ public class ProfileServiceImpl implements  ProfileService{
                 build();
 
         Profile savedProfile = profileRepository.save(profile);
+        user.setUserProfile(savedProfile);
         return profileMapper.toProfileResponse(savedProfile);
 
 
