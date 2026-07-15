@@ -2,6 +2,7 @@ package com.example.PrepPilot.AI.service;
 
 import com.example.PrepPilot.AI.dto.CreateProfileRequest;
 import com.example.PrepPilot.AI.dto.ProfileResponse;
+import com.example.PrepPilot.AI.dto.UpdateProfileRequest;
 import com.example.PrepPilot.AI.entity.User;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface ProfileService {
     List<ProfileResponse> GetAllProfile(User user);
 
     ProfileResponse getMyProfile(User user,Long id);
+
+    ProfileResponse UpdateProfile(Long id, UpdateProfileRequest profileRequest, User user);
 }

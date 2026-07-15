@@ -2,10 +2,12 @@ package com.example.PrepPilot.AI.service;
 
 import com.example.PrepPilot.AI.dto.CreateProfileRequest;
 import com.example.PrepPilot.AI.dto.ProfileResponse;
+import com.example.PrepPilot.AI.dto.UpdateProfileRequest;
 import com.example.PrepPilot.AI.entity.Profile;
 import com.example.PrepPilot.AI.entity.User;
 import com.example.PrepPilot.AI.exception.AlreadyExistException;
 import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
+import com.example.PrepPilot.AI.exception.UnauthorizedException;
 import com.example.PrepPilot.AI.mapper.ProfileMapper;
 import com.example.PrepPilot.AI.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
@@ -67,5 +69,17 @@ public class ProfileServiceImpl implements  ProfileService{
                 .orElseThrow(() -> new ResourceNotFoundException("Profile does not exist"));
 
         return profileMapper.toProfileResponse(profile);
+    }
+
+    @Override
+    public ProfileResponse UpdateProfile(Long id, UpdateProfileRequest profileRequest, User user) {
+        Profile profile = profileRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Profile does not exist"));
+        if(!user.equals(profile.getUser())){
+            throw new UnauthorizedException("You are not Authorized to Update Profile");
+        }
+        ProfileResponse profileResponse = profileMapper.toProfileResponse(profileRequest);
+        Profile save = profileMapper.toEntity(profileResponse);
+        Profile saved=profileRepository.save(profile);
+        return profileMapper.toProfileResponse(saved);
     }
 }

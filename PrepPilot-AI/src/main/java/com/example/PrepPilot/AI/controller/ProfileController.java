@@ -2,6 +2,7 @@ package com.example.PrepPilot.AI.controller;
 
 import com.example.PrepPilot.AI.dto.CreateProfileRequest;
 import com.example.PrepPilot.AI.dto.ProfileResponse;
+import com.example.PrepPilot.AI.dto.UpdateProfileRequest;
 import com.example.PrepPilot.AI.entity.User;
 import com.example.PrepPilot.AI.service.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ public class ProfileController {
     public ResponseEntity<ProfileResponse> getProfileById(@PathVariable Long id){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(profileService.getMyProfile(user,id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfileResponse> updateProfile(@PathVariable Long id,@RequestBody UpdateProfileRequest profileRequest){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(profileService.UpdateProfile(id,profileRequest,user));
     }
 
 
