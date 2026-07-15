@@ -27,14 +27,17 @@ public class AuthService {
     public UserResponse registerUser(RegisterRequest request) {
 
 
-        if(userRepository.existsByEmail(request.getEmail())){
+        if(userRepository.existsByEmail(request.email())){
             throw new DuplicateEmailException("User with this Email Already Registered");
         }
 
+        System.out.println(request.fullName());
+
         User user = userMapper.toEntity(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole(Role.USER);
         User savedUser=userRepository.save(user);
+        System.out.println(savedUser.getFullName());
 
         return userMapper.toResponse(savedUser);
 
@@ -42,7 +45,7 @@ public class AuthService {
 
     public String[] Login(LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),loginRequest.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.email(),loginRequest.password()));
 
         User user = (User) authentication.getPrincipal();
         String[] arr = new String[2];
