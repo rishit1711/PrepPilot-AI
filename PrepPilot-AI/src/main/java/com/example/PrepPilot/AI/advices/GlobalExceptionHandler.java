@@ -1,9 +1,6 @@
 package com.example.PrepPilot.AI.advices;
 
-import com.example.PrepPilot.AI.exception.DuplicateEmailException;
-import com.example.PrepPilot.AI.exception.InvalidResumeException;
-import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
-import com.example.PrepPilot.AI.exception.UnauthorizedException;
+import com.example.PrepPilot.AI.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +61,18 @@ public class GlobalExceptionHandler {
                 .timeStamp(LocalDateTime.now()).build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> handleException(AlreadyExistException ex,HttpServletRequest request){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("Conflict")
+                .status(HttpStatus.CONFLICT.value())
+                .path(request.getRequestURI())
+                .message(ex.getMessage())
+                .timeStamp(LocalDateTime.now()).build();
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
 

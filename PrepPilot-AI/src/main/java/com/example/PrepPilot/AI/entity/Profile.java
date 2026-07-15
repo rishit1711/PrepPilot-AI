@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -14,7 +16,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Table(name = "user_profiles")
-public class UserProfile {
+public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,4 +48,12 @@ public class UserProfile {
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "user_profile_skills",
+            joinColumns = @JoinColumn(name = "user_profile_id")
+    )
+    @Column(name = "skill")
+    private Set<String> skills = new HashSet<>();
 }

@@ -1,18 +1,17 @@
 package com.example.PrepPilot.AI.dto;
 
-import java.util.Set;
+import java.util.HashSet;
 
-public record ProfileResponse(
-        Long id,
-        String email,
-        String name,
-        String about,
+public record CreateProfileRequest(
+
+        String fullName,
         Integer experience,
+        String about,
         String targetRole,
         String githubUrl,
         String linkedinUrl,
         String portfolioUrl,
-        Set<String> skills
+        HashSet<String> skills
 
 ) {
 }

@@ -42,7 +42,7 @@ public class User implements UserDetails {
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    private UserProfile userProfile;
+    private Profile userProfile;
 
     @OneToMany(
             mappedBy = "user",
