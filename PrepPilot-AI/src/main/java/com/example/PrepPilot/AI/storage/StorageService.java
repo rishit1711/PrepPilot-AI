@@ -1,4 +1,4 @@
-package com.example.PrepPilot.AI.service;
+package com.example.PrepPilot.AI.storage;
 
 import com.example.PrepPilot.AI.entity.enums.DocumentType;
 import org.springframework.core.io.Resource;
