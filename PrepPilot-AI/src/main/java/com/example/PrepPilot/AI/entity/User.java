@@ -50,6 +50,7 @@ public class User implements UserDetails {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
+
     private List<Document> documents = new ArrayList<>();
     @CreationTimestamp
     @Column(updatable = false)
