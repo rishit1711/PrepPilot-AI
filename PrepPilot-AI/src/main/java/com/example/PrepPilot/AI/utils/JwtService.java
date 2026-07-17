@@ -18,6 +18,7 @@ public class JwtService {
     private String jwtSecretKey;
 
     private SecretKey getSecretKey() {
+
         return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
 
