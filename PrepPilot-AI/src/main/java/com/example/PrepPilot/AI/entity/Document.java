@@ -29,7 +29,7 @@ public class Document {
     DocumentType documentType;
     Long fileSize;
     String mimeType;
-    String storagePath;
+
 
     @CreationTimestamp
     LocalDateTime createdAt;

@@ -41,12 +41,19 @@ public class DocumentServiceImpl implements DocumentService{
                 .documentType(documentType)
                 .user(user)
                 .fileSize(file.getSize())
+                .mimeType(file.getContentType())
                 .build();
+        System.out.println(document.getOriginalFileName());
 
         Document saved = documentRepository.save(document);
+        System.out.println(saved.getOriginalFileName());
 
         UploadResponse response= documentMapper.toUploadResponse(saved);
-        return new UploadResponse(response.id(),response.storedFileName(),response.documentType(), UploadStatus.UPLOADED);
+        return new UploadResponse(response.id(),response.originalFileName(),response.documentType(), UploadStatus.UPLOADED);
 
     }
+
+
+
+
 }
