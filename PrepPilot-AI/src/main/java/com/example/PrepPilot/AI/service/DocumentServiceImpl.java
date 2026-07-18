@@ -7,8 +7,10 @@ import com.example.PrepPilot.AI.entity.User;
 import com.example.PrepPilot.AI.entity.enums.DocumentType;
 import com.example.PrepPilot.AI.entity.enums.UploadStatus;
 import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
+import com.example.PrepPilot.AI.exception.UnauthorizedException;
 import com.example.PrepPilot.AI.mapper.DocumentMapper;
 import com.example.PrepPilot.AI.repository.DocumentRepository;
+import com.example.PrepPilot.AI.repository.UserRepository;
 import com.example.PrepPilot.AI.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +59,11 @@ public class DocumentServiceImpl implements DocumentService{
 
     @Override
     public Resource downloadFile(Long id) {
+        User user  = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
          Document document = documentRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Document not found"));
+        if(document.getUser().getId()!=user.getId()){
+            throw new UnauthorizedException("You are not Authorized to Access Resources");
+        }
          String storedFileName = document.getStoredFileName();
 
          return storageService.load(storedFileName,document.getDocumentType());

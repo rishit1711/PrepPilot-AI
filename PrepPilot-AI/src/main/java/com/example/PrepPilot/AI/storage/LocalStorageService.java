@@ -82,7 +82,7 @@ public class LocalStorageService implements StorageService {
             Files.deleteIfExists(filePath);
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to delete file", e);
+            throw new FileHandlingException("Failed to delete file");
         }
     }
 
