@@ -40,18 +40,6 @@ public class GlobalExceptionHandler {
 
     }
 
-    @ExceptionHandler(InvalidResumeException.class)
-    public ResponseEntity<ErrorResponse> handleException(InvalidResumeException ex,HttpServletRequest request){
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .error("Invalid Resume")
-                .status(HttpStatus.BAD_REQUEST.value())
-                .path(request.getRequestURI())
-                .message(ex.getMessage())
-                .timeStamp(LocalDateTime.now()).build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-
-    }
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> handleException(UnauthorizedException ex,HttpServletRequest request){
         ErrorResponse errorResponse = ErrorResponse.builder()
@@ -97,6 +85,30 @@ public class GlobalExceptionHandler {
                 .timeStamp(LocalDateTime.now()).build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(DocumentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleException(DocumentNotFoundException ex,HttpServletRequest request){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("Not Found")
+                .status(HttpStatus.NOT_FOUND.value())
+                .path(request.getRequestURI())
+                .message(ex.getMessage())
+                .timeStamp(LocalDateTime.now()).build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(FileHandlingException.class)
+    public ResponseEntity<ErrorResponse> handleException(InvalidDocumentException ex,HttpServletRequest request){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("Invalid Document")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .path(request.getRequestURI())
+                .message(ex.getMessage())
+                .timeStamp(LocalDateTime.now()).build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
 

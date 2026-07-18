@@ -33,7 +33,6 @@ public class DocumentServiceImpl implements DocumentService{
         }
         String storedFileName = storageService.store(file,documentType);
 
-        User user1 = userService.getUserById(user.getId());
 
         // storing meta data
         Document document = Document.builder()
