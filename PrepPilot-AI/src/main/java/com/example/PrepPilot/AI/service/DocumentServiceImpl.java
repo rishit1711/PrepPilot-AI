@@ -1,5 +1,6 @@
 package com.example.PrepPilot.AI.service;
 
+import com.example.PrepPilot.AI.dto.DocumentResponse;
 import com.example.PrepPilot.AI.dto.UploadResponse;
 import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.entity.User;
@@ -11,6 +12,7 @@ import com.example.PrepPilot.AI.repository.DocumentRepository;
 import com.example.PrepPilot.AI.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,7 +55,14 @@ public class DocumentServiceImpl implements DocumentService{
 
     }
 
+    @Override
+    public Resource downloadFile(Long id) {
+         Document document = documentRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Document not found"));
+         String storedFileName = document.getStoredFileName();
 
+         return storageService.load(storedFileName,document.getDocumentType());
+
+    }
 
 
 }
