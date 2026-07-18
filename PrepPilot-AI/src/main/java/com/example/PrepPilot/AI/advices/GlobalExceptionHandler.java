@@ -133,4 +133,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    @ExceptionHandler(IllegalArgumentsException.class)
+    public ResponseEntity<ErrorResponse> handleException(IllegalArgumentsException ex,
+                                                         HttpServletRequest request) {
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("File Error")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .timeStamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
 }

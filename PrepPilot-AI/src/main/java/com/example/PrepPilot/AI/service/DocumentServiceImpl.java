@@ -6,6 +6,7 @@ import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.entity.User;
 import com.example.PrepPilot.AI.entity.enums.DocumentType;
 import com.example.PrepPilot.AI.entity.enums.UploadStatus;
+import com.example.PrepPilot.AI.exception.IllegalArgumentsException;
 import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
 import com.example.PrepPilot.AI.exception.UnauthorizedException;
 import com.example.PrepPilot.AI.mapper.DocumentMapper;
@@ -19,6 +20,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,6 +31,9 @@ public class DocumentServiceImpl implements DocumentService{
     private final UserService userService;
     private final DocumentRepository documentRepository;
     private final DocumentMapper documentMapper;
+
+    private static final long MAX_FILE_SIZE=10*1024*1024;
+
     @Override
     public UploadResponse Upload(MultipartFile file, DocumentType documentType) {
 
@@ -35,6 +42,13 @@ public class DocumentServiceImpl implements DocumentService{
         if(file.isEmpty()){
             throw new ResourceNotFoundException("File Not Found");
         }
+        if(documentType==null){
+            throw new IllegalArgumentException("Document Type Required");
+        }
+        if(file.getSize()>MAX_FILE_SIZE){
+            throw new IllegalArgumentsException("Document Size should not exceed 10MB");
+        }
+
         String storedFileName = storageService.store(file,documentType);
 
 
