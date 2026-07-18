@@ -32,7 +32,7 @@ public class LocalStorageService implements StorageService {
             Path directory = Paths.get(uploadDir,
                     documentType.name().toLowerCase());
 
-            // Create folder if not exists
+            // Create folder if not exists/ agar exist krta hai to ignore
             Files.createDirectories(directory);
 
             // uploads/resume/uuid.pdf
@@ -44,7 +44,7 @@ public class LocalStorageService implements StorageService {
             return storedFileName;
 
         } catch (Exception e) {
-            throw new FileHandlingException("Failed to store file", e);
+            throw new FileHandlingException("Failed to store file");
         }
     }
 
