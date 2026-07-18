@@ -5,7 +5,7 @@ import com.example.PrepPilot.AI.entity.enums.UploadStatus;
 
 public record UploadResponse(
         Long id,
-        String fileName,
+        String  storedFileName,
         DocumentType documentType,
         UploadStatus uploadStatus
 ) {

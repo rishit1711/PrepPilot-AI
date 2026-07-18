@@ -46,7 +46,7 @@ public class DocumentServiceImpl implements DocumentService{
         Document saved = documentRepository.save(document);
 
         UploadResponse response= documentMapper.toUploadResponse(saved);
-        return new UploadResponse(response.id(),response.fileName(),response.documentType(), UploadStatus.UPLOADED);
+        return new UploadResponse(response.id(),response.storedFileName(),response.documentType(), UploadStatus.UPLOADED);
 
     }
 }
