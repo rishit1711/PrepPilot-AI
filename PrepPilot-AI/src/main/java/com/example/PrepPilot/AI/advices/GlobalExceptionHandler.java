@@ -87,6 +87,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
+    @ExceptionHandler(FileHandlingException.class)
+    public ResponseEntity<ErrorResponse> handleException(FileHandlingException ex,HttpServletRequest request){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("Not Found")
+                .status(HttpStatus.NOT_FOUND.value())
+                .path(request.getRequestURI())
+                .message(ex.getMessage())
+                .timeStamp(LocalDateTime.now()).build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
 
 
 

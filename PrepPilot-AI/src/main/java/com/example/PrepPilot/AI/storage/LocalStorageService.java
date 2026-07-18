@@ -1,6 +1,7 @@
 package com.example.PrepPilot.AI.storage;
 
 import com.example.PrepPilot.AI.entity.enums.DocumentType;
+import com.example.PrepPilot.AI.exception.FileHandlingException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class LocalStorageService implements StorageService {
 
         try {
 
-            // Generate unique filename
+
             String extension = getExtension(file.getOriginalFilename());
             String storedFileName = UUID.randomUUID() + extension;
 
@@ -43,7 +44,7 @@ public class LocalStorageService implements StorageService {
             return storedFileName;
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to store file", e);
+            throw new FileHandlingException("Failed to store file", e);
         }
     }
 
