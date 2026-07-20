@@ -84,5 +84,13 @@ public class DocumentServiceImpl implements DocumentService{
 
     }
 
+    @Override
+    public void deleteDocument(Long id) {
+        Document document = documentRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Document Does not exists"));
+        storageService.delete(document.getStoredFileName(),document.getDocumentType());
+        documentRepository.deleteById(id);
+        return;
+    }
+
 
 }

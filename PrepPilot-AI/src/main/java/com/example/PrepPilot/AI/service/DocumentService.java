@@ -10,4 +10,6 @@ public interface DocumentService {
     UploadResponse Upload(MultipartFile file, DocumentType documentType);
 
     Resource downloadFile(Long id);
+
+    void deleteDocument(Long id);
 }
