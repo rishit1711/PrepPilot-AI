@@ -12,7 +12,6 @@ import com.example.PrepPilot.AI.exception.UnauthorizedException;
 import com.example.PrepPilot.AI.mapper.DocumentMapper;
 import com.example.PrepPilot.AI.parser.pdfExtractionService;
 import com.example.PrepPilot.AI.repository.DocumentRepository;
-import com.example.PrepPilot.AI.repository.UserRepository;
 import com.example.PrepPilot.AI.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
