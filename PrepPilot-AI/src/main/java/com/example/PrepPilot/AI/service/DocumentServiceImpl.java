@@ -1,6 +1,5 @@
 package com.example.PrepPilot.AI.service;
 
-import com.example.PrepPilot.AI.dto.DocumentResponse;
 import com.example.PrepPilot.AI.dto.UploadResponse;
 import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.entity.User;
@@ -10,7 +9,7 @@ import com.example.PrepPilot.AI.exception.IllegalArgumentsException;
 import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
 import com.example.PrepPilot.AI.exception.UnauthorizedException;
 import com.example.PrepPilot.AI.mapper.DocumentMapper;
-import com.example.PrepPilot.AI.parser.pdfExtractionService;
+import com.example.PrepPilot.AI.RagModule.pdfExtractionService;
 import com.example.PrepPilot.AI.repository.DocumentRepository;
 import com.example.PrepPilot.AI.storage.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +51,7 @@ public class DocumentServiceImpl implements DocumentService{
         String storedFileName = storageService.store(file,documentType);
         try {
             String txt = pdfExtractionService.extractText(file);
+
         } catch (IOException e) {
             throw new RuntimeException("Failed to extract PDF text", e);
         }

@@ -1,4 +1,4 @@
-package com.example.PrepPilot.AI.parser;
+package com.example.PrepPilot.AI.RagModule;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
