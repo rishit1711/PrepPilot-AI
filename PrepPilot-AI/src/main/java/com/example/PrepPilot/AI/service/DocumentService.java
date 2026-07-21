@@ -12,4 +12,6 @@ public interface DocumentService {
     Resource downloadFile(Long id);
 
     void deleteDocument(Long id);
+
+    String extract(MultipartFile file);
 }
