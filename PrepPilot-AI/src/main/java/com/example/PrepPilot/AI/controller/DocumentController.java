@@ -25,7 +25,7 @@ public class DocumentController {
             @RequestParam("file")MultipartFile file,
             @RequestParam("documentType")DocumentType documentType){
 
-        UploadResponse response = documentService.Upload(file,documentType);
+        UploadResponse response = documentService.upload(file,documentType);
         return ResponseEntity.ok(response);
     }
 
