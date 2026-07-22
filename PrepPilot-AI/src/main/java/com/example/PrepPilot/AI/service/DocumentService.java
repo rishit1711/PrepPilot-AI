@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DocumentService {
-    UploadResponse Upload(MultipartFile file, DocumentType documentType);
+    UploadResponse upload(MultipartFile file, DocumentType documentType);
 
     Resource downloadFile(Long id);
 

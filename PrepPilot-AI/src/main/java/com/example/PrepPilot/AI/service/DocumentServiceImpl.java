@@ -14,12 +14,14 @@ import com.example.PrepPilot.AI.repository.DocumentRepository;
 import com.example.PrepPilot.AI.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,31 +36,56 @@ public class DocumentServiceImpl implements DocumentService{
     private static final long MAX_FILE_SIZE=10*1024*1024;
 
     @Override
-    public UploadResponse Upload(MultipartFile file, DocumentType documentType) {
+    public UploadResponse upload(MultipartFile file, DocumentType documentType) {
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
 
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             throw new ResourceNotFoundException("File Not Found");
         }
-        if(documentType==null){
+
+        if (documentType == null) {
             throw new IllegalArgumentException("Document Type Required");
         }
-        if(file.getSize()>MAX_FILE_SIZE){
+
+        if (file.getSize() > MAX_FILE_SIZE) {
             throw new IllegalArgumentsException("Document Size should not exceed 10MB");
         }
 
-        String storedFileName = storageService.store(file,documentType);
-        try {
-            String txt = pdfExtractionService.extractText(file);
+        // Store file on disk
+        String storedFileName = storageService.store(file, documentType);
 
+        // Extract text
+        String extractedText;
+
+        try {
+            extractedText = pdfExtractionService.extractText(file);
         } catch (IOException e) {
             throw new RuntimeException("Failed to extract PDF text", e);
         }
 
+        // Spring AI Document
+        org.springframework.ai.document.Document aiDocument =
+                new org.springframework.ai.document.Document(extractedText);
 
-        // storing meta data
-        Document document = Document.builder()
+        // Chunking
+        TokenTextSplitter splitter = new TokenTextSplitter();
+
+        List<org.springframework.ai.document.Document> chunks =
+                splitter.split(aiDocument);
+
+
+        System.out.println("Total Chunks : " + chunks.size());
+
+        for (org.springframework.ai.document.Document chunk : chunks) {
+            System.out.println("----------------------------");
+            System.out.println(chunk.getText());
+        }
+
+
+        Document documentEntity = Document.builder()
                 .originalFileName(file.getOriginalFilename())
                 .storedFileName(storedFileName)
                 .documentType(documentType)
@@ -66,14 +93,15 @@ public class DocumentServiceImpl implements DocumentService{
                 .fileSize(file.getSize())
                 .mimeType(file.getContentType())
                 .build();
-        System.out.println(document.getOriginalFileName());
 
-        Document saved = documentRepository.save(document);
-        System.out.println(saved.getOriginalFileName());
+        Document savedDocument = documentRepository.save(documentEntity);
 
-        UploadResponse response= documentMapper.toUploadResponse(saved);
-        return new UploadResponse(response.id(),response.originalFileName(),response.documentType(), UploadStatus.UPLOADED);
-
+        return new UploadResponse(
+                savedDocument.getId(),
+                savedDocument.getOriginalFileName(),
+                savedDocument.getDocumentType(),
+                UploadStatus.UPLOADED
+        );
     }
 
     @Override
