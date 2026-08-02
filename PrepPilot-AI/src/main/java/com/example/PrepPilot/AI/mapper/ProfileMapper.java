@@ -2,6 +2,7 @@ package com.example.PrepPilot.AI.mapper;
 
 import com.example.PrepPilot.AI.dto.CreateProfileRequest;
 import com.example.PrepPilot.AI.dto.ProfileResponse;
+import com.example.PrepPilot.AI.dto.ResumeAnalysisResponse;
 import com.example.PrepPilot.AI.dto.UpdateProfileRequest;
 import com.example.PrepPilot.AI.entity.Profile;
 import org.mapstruct.Mapper;
@@ -15,4 +16,5 @@ public interface ProfileMapper {
     ProfileResponse toProfileResponse(Profile profile);
     ProfileResponse toProfileResponse(UpdateProfileRequest profileRequest);
     Profile toEntity(ProfileResponse profileResponse);
+    Profile toEntity(ResumeAnalysisResponse response);
 }
