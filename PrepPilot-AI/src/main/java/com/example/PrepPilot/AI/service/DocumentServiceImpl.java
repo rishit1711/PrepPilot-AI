@@ -82,7 +82,7 @@ public class DocumentServiceImpl implements DocumentService{
             throw new RuntimeException("Failed to extract PDF text", e);
         }
 
-        // Create Spring AI Document
+
         org.springframework.ai.document.Document aiDocument =
                 new org.springframework.ai.document.Document(extractedText);
 
