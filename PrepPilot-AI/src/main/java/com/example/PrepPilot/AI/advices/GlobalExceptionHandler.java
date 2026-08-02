@@ -147,5 +147,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+    @ExceptionHandler(AIException.class)
+    public ResponseEntity<ErrorResponse> handleException(AIException ex,HttpServletRequest request){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("LLM Error")
+                .status(HttpStatus.NO_CONTENT.value())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .timeStamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 
 }

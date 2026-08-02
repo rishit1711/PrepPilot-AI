@@ -26,7 +26,7 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
         if(document.getDocumentType()!= DocumentType.RESUME){
             throw new ResumeNotFoundException("Given Document is not a Resume");
         }
-        aiOrchasterator.analyze(document);
+        ResumeAnalysisResponse response=aiOrchasterator.analyze(document);
 
     }
 }
