@@ -23,11 +23,15 @@ public class AIOrchasterator {  // AI pipeline hai ye
     public ResumeAnalysisResponse analyze(Document document) {
         List<org.springframework.ai.document.Document> chunks=vectorStore.similaritySearch(
                 SearchRequest.builder()
-                        .filterExpression("documentId == 15")
+                        .query("resume")
+                        .filterExpression("documentId == \"" + document.getId() + "\"")
                         .build()
         );
         Prompt prompt = resumePromptBuilder.build(chunks);
         ResumeAnalysisResponse resumeAnalysisResponse = llmService.generate(String.valueOf(prompt));
+
+
+        // Validations
         if(resumeAnalysisResponse.summary()==null){
             throw new AIException("Summary section Could not be null");
         }
@@ -43,6 +47,8 @@ public class AIOrchasterator {  // AI pipeline hai ye
         if(resumeAnalysisResponse.projects()==null){
             throw new AIException("Projects  section  Could not be null");
         }
+
+        return resumeAnalysisResponse;
 
 
 

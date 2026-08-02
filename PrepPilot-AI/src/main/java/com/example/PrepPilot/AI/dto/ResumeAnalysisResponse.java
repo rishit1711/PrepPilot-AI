@@ -11,6 +11,13 @@ public record ResumeAnalysisResponse(
 
         List<ExperienceDto> experiences,
 
-        List<EducationDto> education
+        List<EducationDto> education,
+
+        List<String> strengths,
+        List<String> weaknesses,
+        List<String> keywords,
+        int atsScore,
+        String seniority,
+        List<String> suggestedRoles
 ) {
 }

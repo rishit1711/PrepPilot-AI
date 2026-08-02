@@ -1,4 +1,10 @@
 package com.example.PrepPilot.AI.dto;
 
-public record ProjectDto() {
+import java.util.List;
+
+public record ProjectDto(
+        String title,
+        String description,
+        List<String> technologies
+) {
 }
