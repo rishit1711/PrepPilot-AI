@@ -1,5 +1,7 @@
 package com.example.PrepPilot.AI.entity;
 
+import com.example.PrepPilot.AI.dto.EducationDto;
+import com.example.PrepPilot.AI.dto.ExperienceDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -56,4 +59,15 @@ public class Profile {
     )
     @Column(name = "skill")
     private Set<String> skills = new HashSet<>();
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<Project> projects;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<EducationDto> educations;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<ExperienceDto> experiences;
+
+
 }
