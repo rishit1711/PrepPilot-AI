@@ -16,5 +16,5 @@ public interface ProfileMapper {
     ProfileResponse toProfileResponse(Profile profile);
     ProfileResponse toProfileResponse(UpdateProfileRequest profileRequest);
     Profile toEntity(ProfileResponse profileResponse);
-    Profile toEntity(ResumeAnalysisResponse response);
+    //Profile toEntity(ResumeAnalysisResponse response);
 }

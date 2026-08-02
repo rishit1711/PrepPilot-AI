@@ -33,8 +33,8 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
         }
         ResumeAnalysisResponse response=aiOrchasterator.analyze(document);
 
-        Profile profile = profileMapper.toEntity(response);
-        profileRepository.save(profile);
+//        Profile profile = profileMapper.toEntity(response);
+//        profileRepository.save(profile);
 
         return  response;
 

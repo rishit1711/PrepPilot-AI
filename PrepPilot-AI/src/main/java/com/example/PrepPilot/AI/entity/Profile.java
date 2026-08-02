@@ -60,14 +60,9 @@ public class Profile {
     @Column(name = "skill")
     private Set<String> skills = new HashSet<>();
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<Project> projects;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<EducationDto> educations;
 
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<ExperienceDto> experiences;
+
 
 
 }
