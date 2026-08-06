@@ -1,8 +1,11 @@
 package com.example.PrepPilot.AI.ai;
 
+import com.example.PrepPilot.AI.dto.JDAnalysisResponse;
 import com.example.PrepPilot.AI.dto.ResumeAnalysisResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,4 +22,10 @@ public class LLMService {
     }
 
 
+    public JDAnalysisResponse getanalysis(Prompt prompt) {
+        return chatClient.prompt()
+                .user((Resource) prompt)
+                .call()
+                .entity(JDAnalysisResponse.class);
+    }
 }

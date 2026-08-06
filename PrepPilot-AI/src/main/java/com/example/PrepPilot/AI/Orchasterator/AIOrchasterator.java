@@ -1,5 +1,6 @@
 package com.example.PrepPilot.AI.Orchasterator;
 
+import com.example.PrepPilot.AI.Orchasterator.promptBuilder.JDPromptBuilder;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.ResumePromptBuilder;
 import com.example.PrepPilot.AI.ai.LLMService;
 import com.example.PrepPilot.AI.dto.JDAnalysisResponse;
@@ -17,7 +18,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AIOrchasterator {  // AI pipeline hai ye
-        private final VectorStore vectorStore;
+        private final VectorStore vectorStore;  // for finding chunks from qdarnt
+        private final JDPromptBuilder jdPromptBuilder;
         private final ResumePromptBuilder resumePromptBuilder;
         private final LLMService llmService;
 
@@ -56,5 +58,21 @@ public class AIOrchasterator {  // AI pipeline hai ye
     }
 
     public JDAnalysisResponse analyzeJd(Document resume, Document jd) {
+        List<org.springframework.ai.document.Document> chunk1=vectorStore.similaritySearch(
+                SearchRequest.builder()
+                        .query("resume")
+                        .filterExpression("documentId == \"" + resume.getId() + "\"")
+                        .build()
+        );
+        List<org.springframework.ai.document.Document> chunk2=vectorStore.similaritySearch(
+                SearchRequest.builder()
+                        .query("jd")
+                        .filterExpression("documentId == \"" + jd.getId() + "\"")
+                        .build()
+        );
+        Prompt prompt = jdPromptBuilder.build(chunk1,chunk2);
+        JDAnalysisResponse response = llmService.getanalysis(prompt);
+        return response;
+
     }
 }
