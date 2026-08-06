@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class JdMatchController {
+public class JDMatchController {
     private final JDAnalysisService jdAnalysisService;
 
-    @PostMapping("/jd-analyze")
-    public ResponseEntity<JDAnalysisResponse> analyze(@RequestBody JDAnalysisRequest request){
-        JDAnalysisResponse response = jdAnalysisService.compareJdWithResume(request);
-        return ResponseEntity.ok(response);
+    @PostMapping("/api/jd-match/analyze")
+    public ResponseEntity<JDAnalysisResponse> jdAnalysisResponse(@RequestBody JDAnalysisRequest request){
+        return ResponseEntity.ok(jdAnalysisService.analyzeResumeWithJD(request));
     }
+
 }

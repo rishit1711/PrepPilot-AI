@@ -10,8 +10,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class JDAnalysisServiceImpl implements JDAnalysisService{
-    @Override
-    public JDAnalysisResponse compareJdWithResume(JDAnalysisRequest request) {
-        return null;
-    }
+
 }
