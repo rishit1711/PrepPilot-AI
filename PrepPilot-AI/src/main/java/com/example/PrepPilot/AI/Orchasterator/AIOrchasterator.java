@@ -2,6 +2,7 @@ package com.example.PrepPilot.AI.Orchasterator;
 
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.ResumePromptBuilder;
 import com.example.PrepPilot.AI.ai.LLMService;
+import com.example.PrepPilot.AI.dto.JDAnalysisResponse;
 import com.example.PrepPilot.AI.dto.ResumeAnalysisResponse;
 import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.exception.AIException;
@@ -52,5 +53,8 @@ public class AIOrchasterator {  // AI pipeline hai ye
 
 
 
+    }
+
+    public JDAnalysisResponse analyzeJd(Document resume, Document jd) {
     }
 }

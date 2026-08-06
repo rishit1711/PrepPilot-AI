@@ -4,7 +4,6 @@ import com.example.PrepPilot.AI.Orchasterator.AIOrchasterator;
 import com.example.PrepPilot.AI.dto.ResumeAnalysisResponse;
 import com.example.PrepPilot.AI.dto.ResumeRequest;
 import com.example.PrepPilot.AI.entity.Document;
-import com.example.PrepPilot.AI.entity.Profile;
 import com.example.PrepPilot.AI.entity.User;
 import com.example.PrepPilot.AI.entity.enums.DocumentType;
 import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
