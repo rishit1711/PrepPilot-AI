@@ -4,9 +4,12 @@ import com.example.PrepPilot.AI.Orchasterator.AIOrchasterator;
 import com.example.PrepPilot.AI.dto.JDAnalysisRequest;
 import com.example.PrepPilot.AI.dto.JDAnalysisResponse;
 import com.example.PrepPilot.AI.entity.Document;
+import com.example.PrepPilot.AI.entity.JDMatchAnalysis;
 import com.example.PrepPilot.AI.entity.User;
 import com.example.PrepPilot.AI.exception.ResumeNotFoundException;
+import com.example.PrepPilot.AI.mapper.JDMapper;
 import com.example.PrepPilot.AI.repository.DocumentRepository;
+import com.example.PrepPilot.AI.repository.JDAnalysisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,8 @@ public class JDAnalysisServiceImpl implements JDAnalysisService{
 
     private final AIOrchasterator aiOrchasterator;
     private final DocumentRepository documentRepository;
+    private final JDMapper jdMapper;
+    private final JDAnalysisRepository jdAnalysisRepository;
 
     @Override
     public JDAnalysisResponse analyzeResumeWithJD(JDAnalysisRequest request) {
@@ -32,6 +37,10 @@ public class JDAnalysisServiceImpl implements JDAnalysisService{
             throw new ResumeNotFoundException("Please Provide Requried Documents");
         }
         JDAnalysisResponse response = aiOrchasterator.analyzeJd(resume,jd);
+        JDMatchAnalysis report = jdMapper.toEntity(response);
+        jdAnalysisRepository.save(report);
+
+
         return response;
 
     }

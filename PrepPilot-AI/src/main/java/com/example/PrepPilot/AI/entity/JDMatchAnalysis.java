@@ -1,7 +1,6 @@
 package com.example.PrepPilot.AI.entity;
 
-import com.example.PrepPilot.AI.entity.Document;
-import com.example.PrepPilot.AI.entity.User;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,7 +32,7 @@ public class JDMatchAnalysis {
     private Document jobDescription;
 
     private Integer overallMatchScore;
-
+    @Column(columnDefinition = "TEXT")
     private String conciseSummary;
 
     @ElementCollection
