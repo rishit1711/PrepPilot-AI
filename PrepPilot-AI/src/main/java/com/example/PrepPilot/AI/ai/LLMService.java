@@ -23,11 +23,9 @@ public class LLMService {
 
 
     public JDAnalysisResponse getAnalysis(Prompt prompt) {
-        String response = chatClient
+        return chatClient
                 .prompt(prompt)
                 .call()
-                .content();
-        System.out.println(response);
-        return null;
+                .entity(JDAnalysisResponse.class);
     }
 }
