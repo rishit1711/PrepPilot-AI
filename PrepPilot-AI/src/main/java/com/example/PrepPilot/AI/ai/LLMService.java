@@ -22,10 +22,12 @@ public class LLMService {
     }
 
 
-    public JDAnalysisResponse getanalysis(Prompt prompt) {
-        return chatClient.prompt()
-                .user((Resource) prompt)
+    public JDAnalysisResponse getAnalysis(Prompt prompt) {
+        String response = chatClient
+                .prompt(prompt)
                 .call()
-                .entity(JDAnalysisResponse.class);
+                .content();
+        System.out.println(response);
+        return null;
     }
 }
