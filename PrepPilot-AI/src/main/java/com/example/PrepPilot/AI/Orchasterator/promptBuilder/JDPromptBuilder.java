@@ -35,7 +35,7 @@ public class JDPromptBuilder {
         - Use EXACTLY the following JSON schema with the same field names.
 
         {
-          "overallMatchScore": 0,
+           "overallMatchScore": <integer between 0 and 100>,
           "matchingSkills": [],
           "missingSkills": [],
           "strengths": [],
@@ -68,6 +68,8 @@ public class JDPromptBuilder {
 
                 Analyze the resume against the job description and return the response in the required JSON format.
                 """.formatted(resumeContext, jdContext);
+
+
 
         return new Prompt(SYSTEM_PROMPT + "\n\n" + userPrompt);
     }

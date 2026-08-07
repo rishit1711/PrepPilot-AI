@@ -27,5 +27,7 @@ public class LLMService {
                 .prompt(prompt)
                 .call()
                 .entity(JDAnalysisResponse.class);
+
+
     }
 }

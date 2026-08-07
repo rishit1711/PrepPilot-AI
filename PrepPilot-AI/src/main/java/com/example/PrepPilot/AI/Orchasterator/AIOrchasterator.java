@@ -58,21 +58,29 @@ public class AIOrchasterator {  // AI pipeline hai ye
     }
 
     public JDAnalysisResponse analyzeJd(Document resume, Document jd) {
-        List<org.springframework.ai.document.Document> chunk1=vectorStore.similaritySearch(
-                SearchRequest.builder()
-                        .query("resume")
-                        .filterExpression("documentId == \"" + resume.getId() + "\"")
-                        .build()
-        );
-        List<org.springframework.ai.document.Document> chunk2=vectorStore.similaritySearch(
-                SearchRequest.builder()
-                        .query("jd")
-                        .filterExpression("documentId == \"" + jd.getId() + "\"")
-                        .build()
-        );
-        Prompt prompt = jdPromptBuilder.build(chunk1,chunk2);
-        JDAnalysisResponse response = llmService.getAnalysis(prompt);
-        return response;
 
+        List<org.springframework.ai.document.Document> resumeChunks =
+                vectorStore.similaritySearch(
+                        SearchRequest.builder()
+                                .query("technical skills projects experience education achievements")
+                                .topK(20)
+                                .filterExpression("documentId == \"" + resume.getId() + "\"")
+                                .build()
+                );
+
+        List<org.springframework.ai.document.Document> jdChunks =
+                vectorStore.similaritySearch(
+                        SearchRequest.builder()
+                                .query("required skills responsibilities qualifications experience")
+                                .topK(20)
+                                .filterExpression("documentId == \"" + jd.getId() + "\"")
+                                .build()
+                );
+
+
+
+        Prompt prompt = jdPromptBuilder.build(resumeChunks, jdChunks);
+
+        return llmService.getAnalysis(prompt);
     }
 }
