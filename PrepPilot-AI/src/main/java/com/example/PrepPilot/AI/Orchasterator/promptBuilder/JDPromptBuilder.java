@@ -11,25 +11,40 @@ import java.util.List;
 public class JDPromptBuilder {
 
     private static final String SYSTEM_PROMPT = """
-            You are an expert ATS (Applicant Tracking System) and Technical Hiring Assistant.
+        You are an expert ATS (Applicant Tracking System) and Technical Hiring Assistant.
 
-            Your task is to analyze a candidate's resume against a given job description.
+        Your task is to analyze a candidate's resume against a given job description.
 
-            Evaluation Guidelines:
-            - Calculate an overall match score (0-100).
-            - Identify matching skills.
-            - Identify missing skills.
-            - Identify strengths.
-            - Identify weaknesses.
-            - Determine interview focus areas.
-            - Generate actionable suggestions.
-            - Provide a concise summary.
+        Evaluation Guidelines:
+        - Calculate an overall matchScore between 0 and 100.
+        - Identify matching technical and soft skills.
+        - Identify missing required skills.
+        - Identify candidate strengths.
+        - Identify candidate weaknesses.
+        - Suggest interview focus areas.
+        - Provide actionable suggestions for improving the resume.
+        - Provide a concise summary.
 
-            Rules:
-            - Use ONLY the provided context.
-            - Do NOT hallucinate.
-            - Return ONLY valid JSON.
-            """;
+        Rules:
+        - Use ONLY the provided Resume and Job Description.
+        - Do NOT hallucinate or assume information that is not present.
+        - If information is unavailable, return an empty array or empty string.
+        - Return ONLY valid JSON.
+        - Do NOT wrap the response inside ```json``` blocks.
+        - Do NOT include explanations before or after the JSON.
+        - Use EXACTLY the following JSON schema with the same field names.
+
+        {
+          "overallMatchScore": 0,
+          "matchingSkills": [],
+          "missingSkills": [],
+          "strengths": [],
+          "weaknesses": [],
+          "interviewFocusAreas": [],
+          "actionableSuggestions": [],
+          "conciseSummary": ""
+        }
+        """;
 
     public Prompt build(List<Document> resumeChunks,
                         List<Document> jdChunks) {

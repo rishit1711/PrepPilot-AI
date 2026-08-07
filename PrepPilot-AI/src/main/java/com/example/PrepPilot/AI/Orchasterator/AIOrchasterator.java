@@ -71,7 +71,7 @@ public class AIOrchasterator {  // AI pipeline hai ye
                         .build()
         );
         Prompt prompt = jdPromptBuilder.build(chunk1,chunk2);
-        JDAnalysisResponse response = llmService.getanalysis(prompt);
+        JDAnalysisResponse response = llmService.getAnalysis(prompt);
         return response;
 
     }
