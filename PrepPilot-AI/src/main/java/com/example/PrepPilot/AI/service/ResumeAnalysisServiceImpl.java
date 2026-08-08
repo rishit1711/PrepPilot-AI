@@ -85,6 +85,8 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
         analysis.setSeniority(response.seniority());
         analysis.setSuggestedRoles(response.suggestedRoles());
 
+        resumeAnalysisRepository.save(analysis);
+
         return  response;
 
     }
