@@ -7,6 +7,7 @@ import com.example.PrepPilot.AI.dto.JDAnalysisResponse;
 import com.example.PrepPilot.AI.dto.ResumeAnalysisResponse;
 import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.exception.AIException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.vectorstore.SearchRequest;
@@ -17,45 +18,89 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AIOrchasterator {  // AI pipeline hai ye
-        private final VectorStore vectorStore;  // for finding chunks from qdarnt
-        private final JDPromptBuilder jdPromptBuilder;
-        private final ResumePromptBuilder resumePromptBuilder;
-        private final LLMService llmService;
+public class AIOrchasterator {
+
+    private final VectorStore vectorStore;
+    private final JDPromptBuilder jdPromptBuilder;
+    private final ResumePromptBuilder resumePromptBuilder;
+    private final LLMService llmService;
+    private final ObjectMapper objectMapper;
+
+
+    // =========================
+    // RESUME ANALYSIS
+    // =========================
 
     public ResumeAnalysisResponse analyze(Document document) {
-        List<org.springframework.ai.document.Document> chunks=vectorStore.similaritySearch(
-                SearchRequest.builder()
-                        .query("resume")
-                        .filterExpression("documentId == \"" + document.getId() + "\"")
-                        .build()
-        );
-        Prompt prompt = resumePromptBuilder.build(chunks);
-        ResumeAnalysisResponse resumeAnalysisResponse = llmService.generate(String.valueOf(prompt));
 
+        List<org.springframework.ai.document.Document> chunks =
+                vectorStore.similaritySearch(
+                        SearchRequest.builder()
+                                .query("resume")
+                                .topK(20)
+                                .filterExpression(
+                                        "documentId == \"" + document.getId() + "\""
+                                )
+                                .build()
+                );
+
+        if (chunks == null || chunks.isEmpty()) {
+            throw new AIException("No resume content found for document");
+        }
+
+        Prompt prompt = resumePromptBuilder.build(chunks);
+
+        String rawResponse = llmService.generate(prompt.toString());
+
+
+
+        // Remove markdown code fences
+        rawResponse = rawResponse
+                .replace("```json", "")
+                .replace("```", "")
+                .trim();
+
+        ResumeAnalysisResponse response;
+
+        try {
+            response = objectMapper.readValue(
+                    rawResponse,
+                    ResumeAnalysisResponse.class
+            );
+        } catch (Exception e) {
+            throw new AIException(
+                    "AI returned invalid JSON: " + rawResponse
+            );
+        }
 
         // Validations
-        if(resumeAnalysisResponse.summary()==null){
-            throw new AIException("Summary section Could not be null");
-        }
-        if(resumeAnalysisResponse.skills()==null){
-            throw new AIException("Skills  section Could not be null");
-        }
-        if(resumeAnalysisResponse.education()==null){
-            throw new AIException("Education  section Could not be null");
-        }
-        if(resumeAnalysisResponse.experiences()==null){
-            throw new AIException("Experiences  section Could not be null");
-        }
-        if(resumeAnalysisResponse.projects()==null){
-            throw new AIException("Projects  section  Could not be null");
+        if (response.summary() == null) {
+            throw new AIException("Summary section could not be null");
         }
 
-        return resumeAnalysisResponse;
+        if (response.skills() == null) {
+            throw new AIException("Skills section could not be null");
+        }
 
+        if (response.education() == null) {
+            throw new AIException("Education section could not be null");
+        }
 
+        if (response.experiences() == null) {
+            throw new AIException("Experiences section could not be null");
+        }
 
+        if (response.projects() == null) {
+            throw new AIException("Projects section could not be null");
+        }
+
+        return response;
     }
+
+
+    // =========================
+    // JD MATCH ANALYSIS
+    // =========================
 
     public JDAnalysisResponse analyzeJd(Document resume, Document jd) {
 
@@ -64,7 +109,9 @@ public class AIOrchasterator {  // AI pipeline hai ye
                         SearchRequest.builder()
                                 .query("technical skills projects experience education achievements")
                                 .topK(20)
-                                .filterExpression("documentId == \"" + resume.getId() + "\"")
+                                .filterExpression(
+                                        "documentId == \"" + resume.getId() + "\""
+                                )
                                 .build()
                 );
 
@@ -73,13 +120,16 @@ public class AIOrchasterator {  // AI pipeline hai ye
                         SearchRequest.builder()
                                 .query("required skills responsibilities qualifications experience")
                                 .topK(20)
-                                .filterExpression("documentId == \"" + jd.getId() + "\"")
+                                .filterExpression(
+                                        "documentId == \"" + jd.getId() + "\""
+                                )
                                 .build()
                 );
 
-
-
-        Prompt prompt = jdPromptBuilder.build(resumeChunks, jdChunks);
+        Prompt prompt = jdPromptBuilder.build(
+                resumeChunks,
+                jdChunks
+        );
 
         return llmService.getAnalysis(prompt);
     }

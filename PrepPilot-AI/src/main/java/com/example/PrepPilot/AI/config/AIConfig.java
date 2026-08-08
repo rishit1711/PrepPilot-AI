@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
         public org.springframework.ai.chat.client.ChatClient chatClient(org.springframework.ai.chat.client.ChatClient.Builder builder){
             return builder
                     .defaultAdvisors(new SimpleLoggerAdvisor())
-
                     .build();
         }
     }

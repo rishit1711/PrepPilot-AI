@@ -13,11 +13,12 @@ import org.springframework.stereotype.Service;
 public class LLMService {
     private final ChatClient chatClient;
 
-    public ResumeAnalysisResponse generate(String prompt){
+    public String generate(String prompt){
         return chatClient.prompt()
                 .user(prompt)
                 .call()
-                .entity(ResumeAnalysisResponse.class);
+                .content();
+
 
     }
 

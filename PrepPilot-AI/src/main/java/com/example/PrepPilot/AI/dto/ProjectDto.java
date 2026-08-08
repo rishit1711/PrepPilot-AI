@@ -6,5 +6,7 @@ public record ProjectDto(
         String title,
         String description,
         List<String> technologies
+
+
 ) {
 }

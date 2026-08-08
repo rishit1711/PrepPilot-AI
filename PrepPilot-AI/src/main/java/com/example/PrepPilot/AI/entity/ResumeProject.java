@@ -1,21 +1,24 @@
 package com.example.PrepPilot.AI.entity;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Embeddable
-    public class ResumeProject {
+@Setter
+@Getter
+public class ResumeProject {
 
-        private String title;
+    private String title;
 
-        @Column(columnDefinition = "TEXT")
-        private String description;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
-        @ElementCollection
-        private List<String> technologies;
-    }
 
+    private String technologies;
+
+}
