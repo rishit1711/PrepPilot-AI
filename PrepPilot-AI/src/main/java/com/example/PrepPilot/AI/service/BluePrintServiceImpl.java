@@ -12,6 +12,7 @@ public class BluePrintServiceImpl implements BluePrintService{
     private final DocumentRepository documentRepository;
     @Override
     public BluePrintResponse GenerateBluePrint(BluePrintRequest request) {
+        return null;
 
     }
 }
