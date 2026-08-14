@@ -6,6 +6,7 @@ import com.example.PrepPilot.AI.dto.JDAnalysisResponse;
 import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.entity.JDMatchAnalysis;
 import com.example.PrepPilot.AI.entity.User;
+import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
 import com.example.PrepPilot.AI.exception.ResumeNotFoundException;
 import com.example.PrepPilot.AI.mapper.JDMapper;
 import com.example.PrepPilot.AI.repository.DocumentRepository;
@@ -30,14 +31,22 @@ public class JDAnalysisServiceImpl implements JDAnalysisService{
 
         // security hanled -->> authenticated user ka resume aur jd do bas
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Document resume = documentRepository.findByIdAndUser(request.resume_id(),user).orElseThrow(null);
-        Document jd = documentRepository.findByIdAndUser(request.jd_id(),user).orElseThrow(null);
+        Document resume = documentRepository
+                .findByIdAndUser(request.resume_id(), user)
+                .orElseThrow(() -> new ResumeNotFoundException("Resume not found"));
+
+        Document jd = documentRepository
+                .findByIdAndUser(request.jd_id(), user)
+                .orElseThrow(() -> new ResourceNotFoundException("Job description not found"));
 
         if(resume ==null|| jd==null){
             throw new ResumeNotFoundException("Please Provide Requried Documents");
         }
         JDAnalysisResponse response = aiOrchasterator.analyzeJd(resume,jd);
         JDMatchAnalysis report = jdMapper.toEntity(response);
+        report.setUser(user);
+        report.setResume(resume);
+        report.setJobDescription(jd);
         jdAnalysisRepository.save(report);
 
 

@@ -8,4 +8,6 @@ import org.mapstruct.Mapper;
 public interface JDMapper {
 
     JDMatchAnalysis toEntity(JDAnalysisResponse response);
+
+    JDAnalysisResponse toResponse(JDMatchAnalysis analysis);
 }
