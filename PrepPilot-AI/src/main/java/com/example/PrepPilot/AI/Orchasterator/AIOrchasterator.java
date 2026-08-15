@@ -1,11 +1,15 @@
 package com.example.PrepPilot.AI.Orchasterator;
 
+import com.example.PrepPilot.AI.Orchasterator.promptBuilder.BluePrintPromptBuilder;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.JDPromptBuilder;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.ResumePromptBuilder;
 import com.example.PrepPilot.AI.ai.LLMService;
+import com.example.PrepPilot.AI.dto.BluePrintResponse;
 import com.example.PrepPilot.AI.dto.JDAnalysisResponse;
 import com.example.PrepPilot.AI.dto.ResumeAnalysisResponse;
 import com.example.PrepPilot.AI.entity.Document;
+import com.example.PrepPilot.AI.entity.JDMatchAnalysis;
+import com.example.PrepPilot.AI.entity.ResumeAnalysis;
 import com.example.PrepPilot.AI.exception.AIException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,7 @@ public class AIOrchasterator {
     private final ResumePromptBuilder resumePromptBuilder;
     private final LLMService llmService;
     private final ObjectMapper objectMapper;
+    private final BluePrintPromptBuilder bluePrintPromptBuilder;
 
 
     // =========================
@@ -132,5 +137,25 @@ public class AIOrchasterator {
         );
 
         return llmService.getAnalysis(prompt);
+    }
+
+    public BluePrintResponse generateBluePrint(Document document, ResumeAnalysis resumeAnalysis, JDMatchAnalysis jdMatchAnalysis) {
+        List<org.springframework.ai.document.Document> jdChunks =
+                vectorStore.similaritySearch(
+                        SearchRequest.builder()
+                                .query("required skills responsibilities qualifications experience")
+                                .topK(20)
+                                .filterExpression(
+                                        "documentId == \"" + document.getId() + "\""
+                                )
+                                .build()
+                );
+        Prompt prompt = bluePrintPromptBuilder.build(
+                jdChunks.toString(),
+                resumeAnalysis,
+                jdMatchAnalysis
+        );
+
+        return llmService.getBluePrint(prompt);
     }
 }
