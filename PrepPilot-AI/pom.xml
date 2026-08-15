@@ -47,7 +47,7 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-model-openai</artifactId>
         </dependency>
-        <!-- Google Gemini Embeddings -->
+
 
         <dependency>
             <groupId>org.springdoc</groupId>

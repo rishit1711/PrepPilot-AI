@@ -1,6 +1,5 @@
 package com.example.PrepPilot.AI.Orchasterator.promptBuilder;
 
-import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.entity.JDMatchAnalysis;
 import com.example.PrepPilot.AI.entity.ResumeAnalysis;
 import org.springframework.ai.chat.prompt.Prompt;

@@ -14,4 +14,5 @@ public interface DocumentService {
     void deleteDocument(Long id);
 
     String extract(MultipartFile file);
+
 }

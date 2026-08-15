@@ -28,6 +28,8 @@ public class LLMService {
 
 
     public JDAnalysisResponse getAnalysis(Prompt prompt) {
+        System.out.println("NVIDIA_API_KEY length: " +
+                (System.getenv("NVIDIA_API_KEY") != null ? System.getenv("NVIDIA_API_KEY").length() : "NULL"));
         return chatClient
                 .prompt(prompt)
                 .call()

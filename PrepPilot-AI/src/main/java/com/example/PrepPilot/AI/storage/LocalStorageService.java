@@ -1,7 +1,14 @@
 package com.example.PrepPilot.AI.storage;
 
+import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.entity.enums.DocumentType;
 import com.example.PrepPilot.AI.exception.FileHandlingException;
+import com.example.PrepPilot.AI.repository.DocumentRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -11,14 +18,18 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class LocalStorageService implements StorageService {
     @Value("${file.upload-dir}")
     private String uploadDir;
-
+    private final DocumentRepository documentRepository;
+    private final TokenTextSplitter tokenTextSplitter;
     @Override
     public String store(MultipartFile file, DocumentType documentType) {
 
@@ -94,4 +105,5 @@ public class LocalStorageService implements StorageService {
 
         return fileName.substring(fileName.lastIndexOf("."));
     }
-}
+
+    }

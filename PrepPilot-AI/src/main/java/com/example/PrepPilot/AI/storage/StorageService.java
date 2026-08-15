@@ -10,4 +10,5 @@ public interface StorageService {
     Resource load(String storedFileName, DocumentType documentType);
 
     void delete(String storedFileName, DocumentType documentType);
+
 }

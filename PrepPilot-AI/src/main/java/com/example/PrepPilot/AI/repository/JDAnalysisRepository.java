@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JDAnalysisRepository extends JpaRepository<JDMatchAnalysis,Long> {
-    JDMatchAnalysis findByResumeIdAndJdId(Long resumeId, Long jdId);
+    JDMatchAnalysis findByResumeIdAndJobDescriptionId(Long resumeId, Long jdId);
 }
