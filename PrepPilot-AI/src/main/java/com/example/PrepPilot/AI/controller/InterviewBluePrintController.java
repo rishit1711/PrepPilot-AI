@@ -2,7 +2,7 @@ package com.example.PrepPilot.AI.controller;
 
 import com.example.PrepPilot.AI.dto.BluePrintRequest;
 import com.example.PrepPilot.AI.dto.BluePrintResponse;
-import com.example.PrepPilot.AI.service.BluePrintService;
+import com.example.PrepPilot.AI.service.InterviewBluePrintService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class InterviewBluePrintController {
-    private final BluePrintService bluePrintService;
+    private final InterviewBluePrintService bluePrintService;
 
     // Kam hai to just give a clear overview of what section to be targetted in interview
 
