@@ -150,12 +150,12 @@ public class AIOrchasterator {
                                 )
                                 .build()
                 );
-        Prompt prompt = bluePrintPromptBuilder.build(
+        Prompt bluePrintprompt = bluePrintPromptBuilder.build(
                 jdChunks.toString(),
                 resumeAnalysis,
                 jdMatchAnalysis
         );
 
-        return llmService.getBluePrint(prompt);
+        return llmService.getBluePrint(bluePrintprompt);
     }
 }
