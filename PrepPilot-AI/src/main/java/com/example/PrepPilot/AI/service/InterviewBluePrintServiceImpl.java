@@ -77,17 +77,21 @@ public class InterviewBluePrintServiceImpl implements InterviewBluePrintService 
                         jdMatchAnalysis
                 );
 
-        // Map AI response → Entity
+
         InterviewBluePrint bluePrint =
                 bluePrintMapper.toBluePrint(response);
 
-        // Add application/database context
+
         bluePrint.setUserId(userId);
         bluePrint.setResumeId(request.resume_id());
         bluePrint.setJd_id(request.jd_id());
         bluePrint.setCreatedAt(Instant.now());
 
         // Save
+        System.out.println("USER = " + bluePrint.getUserId());
+        System.out.println("RESUME = " + bluePrint.getResumeId());
+        System.out.println("JD = " + bluePrint.getJd_id());
+        System.out.println("QUESTIONS = " + bluePrint.getTotalQuestions());
         interviewBluePrintRepository.save(bluePrint);
 
         return response;
