@@ -43,9 +43,6 @@ public class AIOrchasterator {
                         SearchRequest.builder()
                                 .query("resume")
                                 .topK(20)
-                                .filterExpression(
-                                        "documentId == \"" + document.getId() + "\""
-                                )
                                 .build()
                 );
 
