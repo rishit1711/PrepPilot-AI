@@ -13,6 +13,8 @@ import com.example.PrepPilot.AI.utils.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 @RequiredArgsConstructor
 public class InterviewBluePrintServiceImpl implements InterviewBluePrintService {
@@ -24,27 +26,70 @@ public class InterviewBluePrintServiceImpl implements InterviewBluePrintService 
     private final AIOrchasterator aiOrchasterator;
     private final InterviewBluePrintRepository interviewBluePrintRepository;
     private final BluePrintMapper bluePrintMapper;
+
     @Override
+
     public BluePrintResponse GenerateBluePrint(BluePrintRequest request) {
+
         Long userId = jwtService.getUserId();
-        User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User not Found."));
-        // documtent >> JD
-        Document document = documentRepository.findById(request.jd_id()).orElseThrow(()->new DocumentNotFoundException("Job Description not found."));
-        // documrnt1 ->> Resume
-        Document document1 = documentRepository.findById(request.resume_id()).orElseThrow(()->new DocumentNotFoundException("Resume not found."));
-        if(document.getUser().getId()!=userId){
-            throw new UnauthorizedException("Not Authorized");
-        }
-        if(document1.getUser().getId()!=userId){
-            throw new UnauthorizedException("Not Authorized");
-        }
-        ResumeAnalysis resumeAnalysis = resumeAnalysisRepository.findByResumeId(request.resume_id());
-        JDMatchAnalysis jdMatchAnalysis = jdAnalysisRepository.findByResumeIdAndJobDescriptionId(request.resume_id(),request.jd_id());
 
-        BluePrintResponse response = aiOrchasterator.generateBluePrint(document,resumeAnalysis,jdMatchAnalysis);
-        InterviewBluePrint bluePrint = bluePrintMapper.toBluePrint(response);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not Found.")
+                );
+
+        // JD
+        Document jd = documentRepository.findById(request.jd_id())
+                .orElseThrow(() ->
+                        new DocumentNotFoundException("Job Description not found.")
+                );
+
+        // Resume
+        Document resume = documentRepository.findById(request.resume_id())
+                .orElseThrow(() ->
+                        new DocumentNotFoundException("Resume not found.")
+                );
+
+        // Authorization
+        if (!jd.getUser().getId().equals(userId)) {
+            throw new UnauthorizedException("Not Authorized");
+        }
+
+        if (!resume.getUser().getId().equals(userId)) {
+            throw new UnauthorizedException("Not Authorized");
+        }
+
+        // Existing AI analysis
+        ResumeAnalysis resumeAnalysis =
+                resumeAnalysisRepository.findByResumeId(request.resume_id());
+
+        JDMatchAnalysis jdMatchAnalysis =
+                jdAnalysisRepository.findByResumeIdAndJobDescriptionId(
+                        request.resume_id(),
+                        request.jd_id()
+                );
+
+        // Generate blueprint using AI
+        BluePrintResponse response =
+                aiOrchasterator.generateBluePrint(
+                        jd,
+                        resumeAnalysis,
+                        jdMatchAnalysis
+                );
+
+        // Map AI response → Entity
+        InterviewBluePrint bluePrint =
+                bluePrintMapper.toBluePrint(response);
+
+        // Add application/database context
+        bluePrint.setUserId(userId);
+        bluePrint.setResumeId(request.resume_id());
+        bluePrint.setJd_id(request.jd_id());
+        bluePrint.setCreatedAt(Instant.now());
+
+        // Save
         interviewBluePrintRepository.save(bluePrint);
-        return response;
 
+        return response;
     }
 }

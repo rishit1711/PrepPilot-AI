@@ -19,6 +19,7 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -136,7 +137,11 @@ public class AIOrchasterator {
         return llmService.getAnalysis(prompt);
     }
 
-    public BluePrintResponse generateBluePrint(Document document, ResumeAnalysis resumeAnalysis, JDMatchAnalysis jdMatchAnalysis) {
+    public BluePrintResponse generateBluePrint(
+            Document document,
+            ResumeAnalysis resumeAnalysis,
+            JDMatchAnalysis jdMatchAnalysis) {
+
         List<org.springframework.ai.document.Document> jdChunks =
                 vectorStore.similaritySearch(
                         SearchRequest.builder()
@@ -147,12 +152,17 @@ public class AIOrchasterator {
                                 )
                                 .build()
                 );
-        Prompt bluePrintprompt = bluePrintPromptBuilder.build(
-                jdChunks.toString(),
+
+        String jdContent = jdChunks.stream()
+                .map(org.springframework.ai.document.Document::getText)
+                .collect(Collectors.joining("\n"));
+
+        Prompt bluePrintPrompt = bluePrintPromptBuilder.build(
+                jdContent,
                 resumeAnalysis,
                 jdMatchAnalysis
         );
 
-        return llmService.getBluePrint(bluePrintprompt);
+        return llmService.getBluePrint(bluePrintPrompt);
     }
 }
