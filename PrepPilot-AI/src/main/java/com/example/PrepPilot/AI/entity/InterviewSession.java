@@ -25,5 +25,6 @@ public class InterviewSession {
     Difficulty currentDifficulty;
     @Enumerated(EnumType.STRING)
     InterviewStatus interviewStatus;
+    int questionNumber;
 }
 

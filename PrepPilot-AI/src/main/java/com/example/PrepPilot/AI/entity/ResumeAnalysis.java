@@ -19,6 +19,8 @@ import java.util.List;
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
+        @ManyToOne
+        private User user;
 
         @OneToOne
         private Document resume;

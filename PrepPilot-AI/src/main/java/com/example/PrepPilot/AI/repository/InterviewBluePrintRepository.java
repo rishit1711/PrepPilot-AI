@@ -4,4 +4,6 @@ import com.example.PrepPilot.AI.entity.InterviewBluePrint;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InterviewBluePrintRepository extends JpaRepository<InterviewBluePrint,Long> {
+
+    InterviewBluePrint findByIdAndUserId(Long userId, Long id);
 }

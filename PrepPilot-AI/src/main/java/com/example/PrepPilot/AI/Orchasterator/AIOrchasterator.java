@@ -4,9 +4,7 @@ import com.example.PrepPilot.AI.Orchasterator.promptBuilder.BluePrintPromptBuild
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.JDPromptBuilder;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.ResumePromptBuilder;
 import com.example.PrepPilot.AI.ai.LLMService;
-import com.example.PrepPilot.AI.dto.BluePrintResponse;
-import com.example.PrepPilot.AI.dto.JDAnalysisResponse;
-import com.example.PrepPilot.AI.dto.ResumeAnalysisResponse;
+import com.example.PrepPilot.AI.dto.*;
 import com.example.PrepPilot.AI.entity.Document;
 import com.example.PrepPilot.AI.entity.JDMatchAnalysis;
 import com.example.PrepPilot.AI.entity.ResumeAnalysis;
@@ -164,5 +162,8 @@ public class AIOrchasterator {
         );
 
         return llmService.getBluePrint(bluePrintPrompt);
+    }
+
+    public StartInterviewResponse generateQuestion(InterviewContext context) {
     }
 }
