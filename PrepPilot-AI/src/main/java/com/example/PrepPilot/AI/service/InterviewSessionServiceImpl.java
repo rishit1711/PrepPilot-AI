@@ -46,9 +46,9 @@ public class InterviewSessionServiceImpl implements InterviewSessionService{
                                                 .interviewSession(session)
                                                         .build();
 
-        StartInterviewResponse startInterviewResponse = aiOrchasterator.generateQuestion(context);
+        StartInterviewResponse response = aiOrchasterator.generateQuestion(context);
 
-        return startInterviewResponse;
+        return response;
 
 
     }
