@@ -9,7 +9,6 @@ import com.example.PrepPilot.AI.entity.enums.Difficulty;
 import com.example.PrepPilot.AI.entity.enums.InterviewStatus;
 import com.example.PrepPilot.AI.exception.DocumentNotFoundException;
 import com.example.PrepPilot.AI.repository.*;
-import com.example.PrepPilot.AI.utils.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
