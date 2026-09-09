@@ -1,5 +1,6 @@
 package com.example.PrepPilot.AI.Orchasterator;
 
+import com.example.PrepPilot.AI.Orchasterator.promptBuilder.AdaptiveInterviewPromptBuilder;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.BluePrintPromptBuilder;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.JDPromptBuilder;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.ResumePromptBuilder;
@@ -11,6 +12,7 @@ import com.example.PrepPilot.AI.entity.ResumeAnalysis;
 import com.example.PrepPilot.AI.exception.AIException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -29,8 +31,8 @@ public class AIOrchasterator {
     private final LLMService llmService;
     private final ObjectMapper objectMapper;
     private final BluePrintPromptBuilder bluePrintPromptBuilder;
-
-
+    private final AdaptiveInterviewPromptBuilder adaptiveInterviewPromptBuilder;
+    private final ChatClient chatClient;
     // =========================
     // RESUME ANALYSIS
     // =========================
@@ -52,7 +54,6 @@ public class AIOrchasterator {
         Prompt prompt = resumePromptBuilder.build(chunks);
 
         String rawResponse = llmService.generate(prompt.toString());
-
 
 
         // Remove markdown code fences
@@ -164,7 +165,17 @@ public class AIOrchasterator {
         return llmService.getBluePrint(bluePrintPrompt);
     }
 
-    public StartInterviewResponse generateFirstQuestion(InterviewContext context) {
 
+    public GeneratedQuestion generateFirstQuestion(InterviewContext context) {
+
+        String prompt =
+                adaptiveInterviewPromptBuilder.buildFirstQuestionPrompt(context);
+
+        return chatClient.prompt()
+                .user(prompt)
+                .call()
+                .entity(GeneratedQuestion.class);
     }
 }
+
+
