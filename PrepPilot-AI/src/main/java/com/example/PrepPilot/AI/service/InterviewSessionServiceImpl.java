@@ -25,6 +25,7 @@ public class InterviewSessionServiceImpl implements InterviewSessionService{
     private final JDAnalysisRepository jdAnalysisRepository;
     private final InterviewBluePrintRepository interviewBluePrintRepository;
     private  final InterviewResponseMapper interviewResponseMapper;
+    private final InterviewQuestionRepository interviewQuestionRepository;
 
     @Override
     public StartInterviewResponse createSession(startInterviewRequest request) {
@@ -48,11 +49,28 @@ public class InterviewSessionServiceImpl implements InterviewSessionService{
                                                 .interviewSession(session)
                                                         .build();
 
-        GeneratedQuestion question = aiOrchasterator.generateFirstQuestion(context);
-        StartInterviewResponse response =interviewResponseMapper.toInterviewResponse(question);
+        GeneratedQuestion generatedQuestion =
+                aiOrchasterator.generateFirstQuestion(context);
 
+        InterviewQuestion question = InterviewQuestion.builder()
+                .session(session)
+                .question(generatedQuestion.question())
+                .topic(generatedQuestion.topic())
+                .difficulty(generatedQuestion.difficulty())
+                .questionNumber(1)
+                .build();
 
-        return response;
+        InterviewQuestion savedQuestion =
+                interviewQuestionRepository.save(question);
+
+        return new StartInterviewResponse(
+                session.getId(),
+                savedQuestion.getId(),
+                savedQuestion.getQuestion(),
+                savedQuestion.getTopic(),
+                savedQuestion.getDifficulty(),
+                savedQuestion.getQuestionNumber()
+        );
 
 
     }
