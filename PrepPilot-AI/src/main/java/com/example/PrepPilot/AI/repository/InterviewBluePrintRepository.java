@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface InterviewBluePrintRepository extends JpaRepository<InterviewBluePrint,Long> {
 
-    Optional<InterviewBluePrint > findByIdAndUserId(Long userId, Long id);
+    Optional<InterviewBluePrint> findByIdAndUserId(Long userId, Long id);
 }

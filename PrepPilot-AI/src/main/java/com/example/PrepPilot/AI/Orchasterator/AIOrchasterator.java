@@ -7,8 +7,10 @@ import com.example.PrepPilot.AI.Orchasterator.promptBuilder.ResumePromptBuilder;
 import com.example.PrepPilot.AI.ai.LLMService;
 import com.example.PrepPilot.AI.dto.*;
 import com.example.PrepPilot.AI.entity.Document;
+import com.example.PrepPilot.AI.entity.InterviewQuestion;
 import com.example.PrepPilot.AI.entity.JDMatchAnalysis;
 import com.example.PrepPilot.AI.entity.ResumeAnalysis;
+import com.example.PrepPilot.AI.entity.enums.Difficulty;
 import com.example.PrepPilot.AI.exception.AIException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -175,6 +177,12 @@ public class AIOrchasterator {
                 .user(prompt)
                 .call()
                 .entity(GeneratedQuestion.class);
+    }
+
+    public AnswerEvaluation evaluateAnswer(String question, String answer, String topic, Difficulty difficulty) {
+    }
+
+    public GeneratedQuestion generateNextQuestion(InterviewContext context, InterviewQuestion question, AnswerEvaluation evaluation) {
     }
 }
 

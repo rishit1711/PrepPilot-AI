@@ -33,4 +33,12 @@ public class InterviewQuestion {
 
     @Column(nullable = false)
     private int questionNumber;
+
+    @Column(columnDefinition = "TEXT")
+    private String answer;
+
+    private Integer score;
+
+    @Column(columnDefinition = "TEXT")
+    private String feedback;
 }
