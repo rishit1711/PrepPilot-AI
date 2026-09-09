@@ -164,6 +164,7 @@ public class AIOrchasterator {
         return llmService.getBluePrint(bluePrintPrompt);
     }
 
-    public StartInterviewResponse generateQuestion(InterviewContext context) {
+    public StartInterviewResponse generateFirstQuestion(InterviewContext context) {
+
     }
 }
