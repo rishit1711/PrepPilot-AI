@@ -9,6 +9,7 @@ import com.example.PrepPilot.AI.entity.*;
 import com.example.PrepPilot.AI.entity.enums.Difficulty;
 import com.example.PrepPilot.AI.entity.enums.InterviewStatus;
 import com.example.PrepPilot.AI.exception.DocumentNotFoundException;
+import com.example.PrepPilot.AI.exception.InvalidBluePrint;
 import com.example.PrepPilot.AI.mapper.InterviewResponseMapper;
 import com.example.PrepPilot.AI.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class InterviewSessionServiceImpl implements InterviewSessionService{
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ResumeAnalysis resumeAnalysis = resumeAnalysisRepository.findByUser(user).orElseThrow(()->new DocumentNotFoundException("Resume Analysis not Found"));
         JDMatchAnalysis jdMatchAnalysis= jdAnalysisRepository.findByUser(user).orElseThrow(()->new DocumentNotFoundException("JD Analysis not found"));
-        InterviewBluePrint bluePrint = interviewBluePrintRepository.findByIdAndUserId(request.bluePrintId(),user.getId());
+        InterviewBluePrint bluePrint = interviewBluePrintRepository.findByIdAndUserId(request.bluePrintId(),user.getId()).orElseThrow(()->new InvalidBluePrint("Invalid Blueprint"));
         InterviewSession session = InterviewSession.builder()
                 .user(user)
                         .interviewStatus(InterviewStatus.IN_PROGRESS)

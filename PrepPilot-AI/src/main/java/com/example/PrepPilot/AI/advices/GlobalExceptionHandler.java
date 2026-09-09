@@ -159,5 +159,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+    @ExceptionHandler(InvalidBluePrint.class)
+    public ResponseEntity<ErrorResponse> handleException(InvalidBluePrint ex,HttpServletRequest request){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .error("Issue with Interview Blueprint")
+                .status(HttpStatus.NO_CONTENT.value())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .timeStamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 
 }
