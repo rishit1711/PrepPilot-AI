@@ -179,10 +179,42 @@ public class AIOrchasterator {
                 .entity(GeneratedQuestion.class);
     }
 
-    public AnswerEvaluation evaluateAnswer(String question, String answer, String topic, Difficulty difficulty) {
+    public AnswerEvaluation evaluateAnswer(
+            String question,
+            String answer,
+            String topic,
+            Difficulty difficulty) {
+
+        String prompt = adaptiveInterviewPromptBuilder
+                .buildAnswerEvaluationPrompt(
+                        question,
+                        answer,
+                        topic,
+                        difficulty
+                );
+
+        return chatClient.prompt()
+                .user(prompt)
+                .call()
+                .entity(AnswerEvaluation.class);
     }
 
-    public GeneratedQuestion generateNextQuestion(InterviewContext context, InterviewQuestion question, AnswerEvaluation evaluation) {
+    public GeneratedQuestion generateNextQuestion(
+            InterviewContext context,
+            InterviewQuestion question,
+            AnswerEvaluation evaluation) {
+
+        String prompt = adaptiveInterviewPromptBuilder
+                .buildNextQuestionPrompt(
+                        context,
+                        question,
+                        evaluation
+                );
+
+        return chatClient.prompt()
+                .user(prompt)
+                .call()
+                .entity(GeneratedQuestion.class);
     }
 }
 
