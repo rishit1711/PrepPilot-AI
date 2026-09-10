@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AdaptiveInterviewPromptBuilder {
+    // prompt for generating first question --> later which will be dynamically
 
     public String buildFirstQuestionPrompt(InterviewContext context) {
 
