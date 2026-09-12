@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,8 +28,12 @@ public class InterviewBluePrint {
     @Column(nullable = false)
     Integer totalQuestions;
     Instant createdAt;
-    @OneToMany
-    List<BluePrintSection> sections;
+    @OneToMany(
+            mappedBy = "bluePrint",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<BluePrintSection> sections = new ArrayList<>();
 
 
 }

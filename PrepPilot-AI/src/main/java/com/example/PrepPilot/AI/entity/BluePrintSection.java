@@ -14,17 +14,27 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BluePrintSection {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     @Column(nullable = false)
     String name;
+
     Integer sequence;
+
     @Column(nullable = false)
     Integer weightage;
-    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(
+            mappedBy = "section",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     List<BluePrintTopic> topics;
+
     @ManyToOne
     @JoinColumn(name = "blueprint_id", nullable = false)
-    InterviewBluePrint blueprint;
+    InterviewBluePrint bluePrint;
 }

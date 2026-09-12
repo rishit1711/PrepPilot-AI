@@ -1,8 +1,10 @@
 package com.example.PrepPilot.AI.controller;
 
 import com.example.PrepPilot.AI.dto.SubmitAnswerRequest;
+import com.example.PrepPilot.AI.dto.SubmitAnswerResponse;
 import com.example.PrepPilot.AI.service.InterviewSessionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
