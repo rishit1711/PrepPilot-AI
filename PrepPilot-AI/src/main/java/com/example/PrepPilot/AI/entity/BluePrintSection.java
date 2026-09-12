@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,7 @@ public class BluePrintSection {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    List<BluePrintTopic> topics;
+    private List<BluePrintTopic> topics = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "blueprint_id", nullable = false)

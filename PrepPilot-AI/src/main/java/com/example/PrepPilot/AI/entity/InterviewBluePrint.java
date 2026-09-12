@@ -16,24 +16,30 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class InterviewBluePrint {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     @Column(nullable = false)
     Long userId;
+
     @Column(nullable = false)
     Long resumeId;
+
     @Column(nullable = false)
     Long jd_id;
+
     @Column(nullable = false)
     Integer totalQuestions;
+
     Instant createdAt;
+
     @OneToMany(
             mappedBy = "bluePrint",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @Builder.Default
     private List<BluePrintSection> sections = new ArrayList<>();
-
-
 }
