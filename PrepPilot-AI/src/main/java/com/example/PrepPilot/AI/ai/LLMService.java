@@ -8,6 +8,7 @@ import com.example.PrepPilot.AI.entity.JDMatchAnalysis;
 import com.example.PrepPilot.AI.entity.ResumeAnalysis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,27 @@ public class LLMService {
 
 
     }
-    public BluePrintResponse getBluePrint(Prompt prompt){
+    public BluePrintResponse getBluePrint(Prompt prompt) {
+
+        ChatResponse chatResponse = chatClient.prompt(prompt)
+                .call()
+                .chatResponse();
+
+        if (chatResponse == null) {
+            throw new IllegalStateException("ChatResponse is null");
+        }
+
+        String content = chatResponse.getResult()
+                .getOutput()
+                .getText();
+
+        System.out.println("========== AI RESPONSE ==========");
+        System.out.println(content);
+        System.out.println("========== RESPONSE LENGTH ==========");
+        System.out.println(content != null ? content.length() : 0);
+
         return chatClient.prompt(prompt)
-                .call().entity(BluePrintResponse.class);
+                .call()
+                .entity(BluePrintResponse.class);
     }
 }

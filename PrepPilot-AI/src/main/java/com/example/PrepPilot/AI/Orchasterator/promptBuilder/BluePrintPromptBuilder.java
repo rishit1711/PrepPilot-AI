@@ -16,80 +16,163 @@ public class BluePrintPromptBuilder {
         String prompt = """
                 You are an Interview Blueprint Generator.
 
-                Your task is to create a structured interview blueprint
-                based on the candidate's resume analysis, job description,
-                and JD match analysis.
+                Your task is to generate a structured interview blueprint
+                for a candidate based on:
+                1. Job Description
+                2. Resume Analysis
+                3. JD Match Analysis
 
-                JOB DESCRIPTION:
+                Your output will be consumed directly by a Java backend,
+                so the response MUST strictly follow the required JSON structure.
+
+                =========================
+                JOB DESCRIPTION
+                =========================
+
                 %s
 
-                RESUME ANALYSIS:
+                =========================
+                RESUME ANALYSIS
+                =========================
+
                 %s
 
-                JD MATCH ANALYSIS:
+                =========================
+                JD MATCH ANALYSIS
+                =========================
+
                 %s
 
-                BLUEPRINT REQUIREMENTS:
+                =========================
+                BLUEPRINT REQUIREMENTS
+                =========================
 
-                1. Create relevant interview sections based on the job description
-                   and the candidate's background.
+                1. Generate between 5 and 7 interview sections.
 
-                2. Each section must contain relevant topics that should be tested
-                   during the interview.
+                2. Each section must contain between 3 and 5 relevant topics.
 
-                3. Assign a difficulty to every topic.
+                3. Sections must be based primarily on the job description
+                   and candidate profile.
+
+                4. Prioritize:
+                   - Important job requirements
+                   - Skills required by the JD
+                   - Skills missing or weak in the candidate
+                   - Skills strongly demonstrated by the candidate
+                   - Relevant projects and experience
+                   - Important technical interview areas
+
+                5. Each topic must have a difficulty.
+
                    Allowed values:
-                   EASY, MEDIUM, HARD
+                   EASY
+                   MEDIUM
+                   HARD
 
-                4. Assign a priority to every topic.
+                6. Each topic must have a priority.
+
                    Allowed values:
-                   LOW, MEDIUM, HIGH
+                   LOW
+                   MEDIUM
+                   HIGH
 
-                5. Assign a weightage to every section.
-                   All section weightages must add up to 100.
+                7. Every section must have a sequence number.
+                   Sequence must start from 1 and increase by 1.
 
-                6. Assign a weightage to every topic within a section.
-                   Topic weightages within each section must add up to 100.
+                8. Every section must have a weightage.
 
-                7. Assign a sequence number to every section.
+                   Rules:
+                   - Section weightages must add up to exactly 100.
+                   - Use integer values only.
 
-                8. Set totalQuestions to the estimated total number of questions
-                   for the complete interview.
+                9. Every topic must have a weightage.
 
-                9. Give higher priority to important JD requirements,
-                   missing skills, weaknesses, and relevant interview focus areas.
+                   Rules:
+                   - Topic weightages within each section must add up to exactly 100.
+                   - Use integer values only.
 
-                10. Consider relevant skills, experience, and projects from
-                    the resume analysis.
+                10. totalQuestions represents the approximate number of
+                    questions that should be asked in the complete interview.
+
+                    Allowed range:
+                    15 to 25.
 
                 11. Do NOT generate actual interview questions.
-                    Generate only the interview blueprint.
 
-                RESPONSE FORMAT:
+                12. Generate only the blueprint:
+                    sections, topics, difficulty, priority,
+                    weightages, sequence, and totalQuestions.
+
+                13. Do not create unnecessary or duplicate topics.
+
+                14. Keep section names and topic names concise.
+
+                =========================
+                IMPORTANT OUTPUT RULES
+                =========================
 
                 Return ONLY valid JSON.
-                Do not use markdown.
-                Do not add explanations.
-                Do not add any fields other than the fields specified below.
+
+                DO NOT:
+                - Use markdown
+                - Use ```json
+                - Add explanations
+                - Add comments
+                - Add introductory text
+                - Add concluding text
+                - Add fields not defined in the schema
+                - Return partial JSON
+
+                The JSON response MUST be complete and syntactically valid.
+
+                Before finishing the response, make sure:
+                - Every topic object is closed.
+                - Every topics array is closed.
+                - Every section object is closed.
+                - Every sections array is closed.
+                - The root JSON object is closed.
+
+                NEVER stop generation while inside an object or array.
+
+                =========================
+                REQUIRED JSON STRUCTURE
+                =========================
 
                 {
                   "totalQuestions": 20,
                   "sections": [
                     {
-                      "name": "Core Java",
+                      "name": "Core Java and OOP",
                       "sequence": 1,
-                      "weightage": 30,
+                      "weightage": 20,
                       "topics": [
                         {
-                          "name": "Collections",
+                          "name": "OOP Concepts",
                           "difficulty": "MEDIUM",
                           "weightage": 40,
                           "priority": "HIGH"
+                        },
+                        {
+                          "name": "Collections",
+                          "difficulty": "MEDIUM",
+                          "weightage": 35,
+                          "priority": "HIGH"
+                        },
+                        {
+                          "name": "Multithreading",
+                          "difficulty": "HARD",
+                          "weightage": 25,
+                          "priority": "MEDIUM"
                         }
                       ]
                     }
                   ]
                 }
+
+                IMPORTANT:
+                The example above is only a structural example.
+                Generate the actual sections and topics based on the
+                provided JD, Resume Analysis, and JD Match Analysis.
                 """.formatted(
                 jd,
                 resumeAnalysis,
