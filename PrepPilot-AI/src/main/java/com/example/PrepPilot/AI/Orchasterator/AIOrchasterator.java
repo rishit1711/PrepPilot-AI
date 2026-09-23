@@ -216,6 +216,10 @@ public class AIOrchasterator {
                 .call()
                 .entity(GeneratedQuestion.class);
     }
+
+    public String generateText(String prompt) {
+
+    }
 }
 
 

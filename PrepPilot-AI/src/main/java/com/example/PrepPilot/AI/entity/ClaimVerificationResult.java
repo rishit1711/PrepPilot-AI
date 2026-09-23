@@ -22,7 +22,8 @@ public class ClaimVerificationResult {
     private Double confidenceScore;
 
     @Enumerated(EnumType.STRING)
-    private ClaimStatus status;
+    private
+    ClaimStatus status;
 
     @Column(columnDefinition = "TEXT")
     private String evidence;

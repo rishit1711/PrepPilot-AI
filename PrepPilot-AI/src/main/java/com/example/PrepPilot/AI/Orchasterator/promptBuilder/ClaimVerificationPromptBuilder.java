@@ -5,9 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClaimVerificationPromptBuilder {
     public String buildClaimVerificationQuestionPrompt(
-            String claim,
-            String resumeContext,
-            String jobDescriptionContext
+            String claim
     ) {
 
         return """
@@ -19,11 +17,7 @@ public class ClaimVerificationPromptBuilder {
             CLAIM:
             %s
 
-            RESUME CONTEXT:
-            %s
-
-            JOB DESCRIPTION CONTEXT:
-            %s
+          
 
             Your task is to generate ONE technical interview question that
             can provide meaningful evidence of whether the candidate
@@ -41,9 +35,7 @@ public class ClaimVerificationPromptBuilder {
             
             Return only the question.
             """.formatted(
-                claim,
-                resumeContext,
-                jobDescriptionContext
+                claim
         );
     }
     public String buildNextClaimVerificationQuestionPrompt(
@@ -107,6 +99,48 @@ public class ClaimVerificationPromptBuilder {
                 previousAnswer,
                 evaluation
         );
+    }
+
+    public String buildAnswerEvaluationPrompt(
+            String claim,
+            String question,
+            String answer
+    ) {
+
+        return """
+            You are evaluating a candidate's answer for resume claim verification.
+
+            RESUME CLAIM:
+            %s
+
+            QUESTION:
+            %s
+
+            CANDIDATE ANSWER:
+            %s
+
+            Evaluate whether this answer provides evidence that
+            the candidate genuinely understands the claimed skill.
+
+            Evaluate based on:
+            - Technical correctness
+            - Depth of understanding
+            - Practical understanding
+            - Important misconceptions
+            - Missing knowledge
+
+            Do not judge the candidate based on grammar or English quality.
+
+            Return JSON with exactly these fields:
+
+            {
+              "confidenceScore": number between 0 and 1,
+              "sufficientEvidence": true or false,
+              "evidence": "string",
+              "knowledgeGaps": ["string"],
+              "strengths": ["string"]
+            }
+            """.formatted(claim, question, answer);
     }
 
 }
