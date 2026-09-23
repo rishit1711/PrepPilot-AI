@@ -219,7 +219,14 @@ public class AIOrchasterator {
 
     public String generateText(String prompt) {
 
+
+            return chatClient
+                    .prompt()
+                    .user(prompt)
+                    .call()
+                    .content();
+        }
+
     }
-}
 
 
