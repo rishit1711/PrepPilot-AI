@@ -46,5 +46,67 @@ public class ClaimVerificationPromptBuilder {
                 jobDescriptionContext
         );
     }
+    public String buildNextClaimVerificationQuestionPrompt(
+            String claim,
+            String previousQuestion,
+            String previousAnswer,
+            String evaluation,
+            String resumeContext
+    ) {
+
+        return """
+            You are an adaptive technical interviewer verifying a
+            candidate's resume claim.
+
+            RESUME CLAIM:
+            %s
+
+            RESUME CONTEXT:
+            %s
+
+            PREVIOUS QUESTION:
+            %s
+
+            CANDIDATE'S ANSWER:
+            %s
+
+            EVALUATION OF THE ANSWER:
+            %s
+
+            Your task is to generate the NEXT question that should be asked
+            to verify the candidate's claimed skill.
+
+            The next question must be based on the evidence obtained from
+            the candidate's previous answer.
+
+            Follow these rules:
+
+            1. Identify what the candidate demonstrated correctly.
+            2. Identify important knowledge gaps, misconceptions, or
+               unverified areas from the evaluation.
+            3. Generate a question that specifically probes one of those
+               missing or weak areas.
+            4. Do NOT repeat the previous question.
+            5. Do NOT ask an unrelated question.
+            6. Do NOT simply increase difficulty without a reason.
+            7. If the candidate demonstrated strong understanding,
+               probe a deeper practical or scenario-based aspect of
+               the same skill.
+            8. If the candidate showed weak understanding, ask a
+               foundational follow-up question that helps determine
+               whether the weakness is genuine.
+            9. Do not reveal the answer or guide the candidate toward it.
+            10. The question must help produce additional evidence
+                about the resume claim.
+
+            Return only the next interview question.
+            """.formatted(
+                claim,
+                resumeContext,
+                previousQuestion,
+                previousAnswer,
+                evaluation
+        );
+    }
 
 }
