@@ -4,6 +4,8 @@ import com.example.PrepPilot.AI.Orchasterator.AIOrchasterator;
 import com.example.PrepPilot.AI.dto.ResumeAnalysisResponse;
 import com.example.PrepPilot.AI.dto.ResumeRequest;
 import com.example.PrepPilot.AI.entity.*;
+import com.example.PrepPilot.AI.entity.enums.ClaimStatus;
+import com.example.PrepPilot.AI.entity.enums.ClaimType;
 import com.example.PrepPilot.AI.entity.enums.DocumentType;
 import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
 import com.example.PrepPilot.AI.exception.ResumeNotFoundException;
@@ -11,6 +13,7 @@ import com.example.PrepPilot.AI.mapper.ProfileMapper;
 import com.example.PrepPilot.AI.repository.DocumentRepository;
 import com.example.PrepPilot.AI.repository.ProfileRepository;
 import com.example.PrepPilot.AI.repository.ResumeAnalysisRepository;
+import com.example.PrepPilot.AI.repository.ResumeClaimRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
     private final ResumeAnalysisRepository resumeAnalysisRepository;
+    private final ResumeClaimRepository resumeClaimRepository;
     @Override
     public ResumeAnalysisResponse analyzeResume(ResumeRequest resumeRequest) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -86,8 +90,24 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
         analysis.setSuggestedRoles(response.suggestedRoles());
 
         resumeAnalysisRepository.save(analysis);
+        createClaims(analysis);
 
         return  response;
+
+    }
+    // skills ko store krega as claims for future Claim verification
+    public void createClaims(ResumeAnalysis resumeAnalysis){
+        for(String skill : resumeAnalysis.getSkills()){
+            ResumeClaim claim = ResumeClaim.builder()
+                    .claim(skill)
+                            .claimType(ClaimType.SKILL)
+                                    .claimStatus(ClaimStatus.UNVERIFIED)
+                                            .resumeAnalysis(resumeAnalysis)
+
+                    .build();
+
+            resumeClaimRepository.save(claim);
+        }
 
     }
 }
