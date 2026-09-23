@@ -44,6 +44,7 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
         analysis.setResume(document);
         analysis.setSummary(response.summary());
         analysis.setSkills(response.skills());
+        analysis.setUser(user);
         analysis.setProjects(
                 response.projects().stream()
                         .map(dto -> {
