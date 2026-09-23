@@ -2,6 +2,7 @@ package com.example.PrepPilot.AI.service;
 
 import com.example.PrepPilot.AI.Orchasterator.AIOrchasterator;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.ClaimVerificationPromptBuilder;
+import com.example.PrepPilot.AI.dto.VerificationQuestionResponse;
 import com.example.PrepPilot.AI.entity.ResumeClaim;
 import com.example.PrepPilot.AI.exception.ClaimException;
 import com.example.PrepPilot.AI.repository.ResumeClaimRepository;
@@ -20,7 +21,7 @@ public class ClaimVerificationServiceImpl
     private final AIOrchasterator aiOrchasterator;
 
     @Override
-    public String generateQuestion(Long claimId) {
+    public VerificationQuestionResponse generateQuestion(Long claimId) {
 
         // 1. Fetch claim
         ResumeClaim resumeClaim = resumeClaimRepository.findById(claimId)
@@ -33,14 +34,14 @@ public class ClaimVerificationServiceImpl
 
         log.info("Generating verification question for claim: {}", claim);
 
-        // 3. Build prompt
+
         String prompt = claimVerificationPromptBuilder
                 .buildClaimVerificationQuestionPrompt(claim);
 
-        // 4. Ask AI
-        String question = aiOrchasterator.generateText(prompt);
 
-        // 5. Return generated question
+        VerificationQuestionResponse question = aiOrchasterator.generateText(prompt);
+
+
         return question;
     }
 }

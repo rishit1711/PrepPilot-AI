@@ -217,14 +217,14 @@ public class AIOrchasterator {
                 .entity(GeneratedQuestion.class);
     }
 
-    public String generateText(String prompt) {
+    public VerificationQuestionResponse generateText(String prompt) {
 
 
             return chatClient
                     .prompt()
                     .user(prompt)
                     .call()
-                    .content();
+                    .entity(VerificationQuestionResponse.class);
         }
 
     }
