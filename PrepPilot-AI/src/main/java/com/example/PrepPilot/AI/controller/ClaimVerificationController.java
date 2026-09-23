@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClaimVerificationController {
     private final ClaimVerificationService claimVerificationService;
     @PostMapping("/{claimId}/question")
-    public VerificationQuestionResponse generateQuestion(
+    public String generateQuestion(
             @PathVariable Long claimId) {
 
         return claimVerificationService.generateQuestion(claimId);

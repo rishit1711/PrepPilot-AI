@@ -18,8 +18,8 @@ public class ClaimVerificationServiceImpl implements ClaimVerificationService{
     private final ClaimVerificationPromptBuilder claimVerificationPromptBuilder;
     private final AIOrchasterator aiOrchasterator;
     @Override
-    public VerificationQuestionResponse generateQuestion(Long claimId) {
+    public String generateQuestion(Long claimId) {
         ResumeClaim resumeClaim = resumeClaimRepository.findById(claimId).orElseThrow(()->new ClaimException("Claim not Present."));
-
+        return "";
     }
 }
