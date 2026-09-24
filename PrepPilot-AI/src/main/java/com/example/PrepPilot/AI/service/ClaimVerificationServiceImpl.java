@@ -35,10 +35,7 @@ public class ClaimVerificationServiceImpl
         String prompt = claimVerificationPromptBuilder
                 .buildClaimVerificationQuestionPrompt(claim);
 
-
         VerificationQuestionResponse question = aiOrchasterator.generateText(prompt);
-
-
 
         return question;
     }
