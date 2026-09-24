@@ -10,8 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ResumeQuestion {
-
+public class ClaimQuestion {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
