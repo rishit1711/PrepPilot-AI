@@ -60,6 +60,11 @@ public class ClaimVerificationServiceImpl
     public ClaimAnswerEvaluation evaluateAnswer(ClaimAnswerRequest claimAnswerRequest) {
         ClaimQuestion claimQuestion = claimQuestionRepository.findById(claimAnswerRequest.quetionId()).orElseThrow(()->new ClaimException("Claim Question not found with Id :"+claimAnswerRequest.quetionId()));
         ResumeClaim claim = claimQuestion.getResumeClaim();
+        String prompt = claimVerificationPromptBuilder.buildAnswerEvaluationPrompt(claim.getClaim(),claimQuestion.getQuestion(),claimAnswerRequest.answer());
+
+        ClaimAnswerEvaluation answerEvaluation = aiOrchasterator.evaluateClaimAnswer(prompt);
+
+
 
 
 

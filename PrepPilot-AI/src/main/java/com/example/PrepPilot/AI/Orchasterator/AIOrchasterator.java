@@ -227,6 +227,12 @@ public class AIOrchasterator {
                     .entity(VerificationQuestionResponse.class);
         }
 
+    public ClaimAnswerEvaluation evaluateClaimAnswer(String prompt) {
+
+        return chatClient.prompt()
+                .user(prompt)
+                .call().entity(ClaimAnswerEvaluation.class);
     }
+}
 
 
