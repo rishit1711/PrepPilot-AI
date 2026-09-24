@@ -48,11 +48,8 @@ public class ClaimVerificationServiceImpl
         ClaimQuestion savedQuestion =
                 claimQuestionRepository.save(claimQuestion);
 
-        return new VerificationQuestionResponse(
-                response.claimId(),
-                savedQuestion.getId(),
-                response.claim(),
-                response.question()
-        );
+        return new VerificationQuestionResponse(savedQuestion.getId(), resumeClaim.getId(), response.question(),resumeClaim.getClaim());
+
+
     }
 }
