@@ -1,5 +1,4 @@
 package com.example.PrepPilot.AI.service;
-
 import com.example.PrepPilot.AI.Orchasterator.AIOrchasterator;
 import com.example.PrepPilot.AI.Orchasterator.promptBuilder.ClaimVerificationPromptBuilder;
 import com.example.PrepPilot.AI.dto.VerificationQuestionResponse;
@@ -23,23 +22,22 @@ public class ClaimVerificationServiceImpl
     @Override
     public VerificationQuestionResponse generateQuestion(Long claimId) {
 
-        // 1. Fetch claim
+        // Fetch claim
         ResumeClaim resumeClaim = resumeClaimRepository.findById(claimId)
                 .orElseThrow(() ->
                         new ClaimException("Resume claim not found with id: " + claimId)
                 );
 
-        // 2. Get actual claim
+        //  Get actual claim
         String claim = resumeClaim.getClaim();
 
         log.info("Generating verification question for claim: {}", claim);
-
-
         String prompt = claimVerificationPromptBuilder
                 .buildClaimVerificationQuestionPrompt(claim);
 
 
         VerificationQuestionResponse question = aiOrchasterator.generateText(prompt);
+
 
 
         return question;

@@ -160,7 +160,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
     @ExceptionHandler(InvalidBluePrint.class)
-    public ResponseEntity<ErrorResponse> handleException(InvalidBluePrint ex,HttpServletRequest request){
+    public ResponseEntity<ErrorResponse> exc(InvalidBluePrint ex,HttpServletRequest request){
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .error("Issue with Interview Blueprint")
                 .status(HttpStatus.NO_CONTENT.value())
@@ -171,7 +171,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
-    @ExceptionHandler(InvalidBluePrint.class)
+    @ExceptionHandler(ClaimException.class)
     public ResponseEntity<ErrorResponse> handleException(ClaimException ex,HttpServletRequest request){
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .error("Claim With this Id not Found!")
