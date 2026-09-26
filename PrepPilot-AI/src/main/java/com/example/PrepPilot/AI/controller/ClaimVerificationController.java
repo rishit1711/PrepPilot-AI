@@ -1,12 +1,12 @@
 package com.example.PrepPilot.AI.controller;
 
+import com.example.PrepPilot.AI.dto.ClaimAnswerEvaluation;
+import com.example.PrepPilot.AI.dto.ClaimAnswerRequest;
 import com.example.PrepPilot.AI.dto.VerificationQuestionResponse;
 import com.example.PrepPilot.AI.service.ClaimVerificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +18,11 @@ public class ClaimVerificationController {
             @PathVariable Long claimId) {
 
         return claimVerificationService.generateQuestion(claimId);
+    }
+
+    @PostMapping("/{claimId}/question/answer")
+    public ResponseEntity<ClaimAnswerEvaluation> evaluate(@RequestBody ClaimAnswerRequest answerRequest){
+        return ResponseEntity.ok().body(claimVerificationService.evaluateAnswer(answerRequest));
     }
 
 

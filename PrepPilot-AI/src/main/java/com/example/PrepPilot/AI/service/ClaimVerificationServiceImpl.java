@@ -7,7 +7,6 @@ import com.example.PrepPilot.AI.dto.VerificationQuestionResponse;
 import com.example.PrepPilot.AI.entity.ClaimQuestion;
 import com.example.PrepPilot.AI.entity.ResumeClaim;
 import com.example.PrepPilot.AI.exception.ClaimException;
-import com.example.PrepPilot.AI.exception.ResourceNotFoundException;
 import com.example.PrepPilot.AI.repository.ClaimQuestionRepository;
 import com.example.PrepPilot.AI.repository.ResumeClaimRepository;
 import lombok.RequiredArgsConstructor;
@@ -58,11 +57,13 @@ public class ClaimVerificationServiceImpl
 
     @Override
     public ClaimAnswerEvaluation evaluateAnswer(ClaimAnswerRequest claimAnswerRequest) {
-        ClaimQuestion claimQuestion = claimQuestionRepository.findById(claimAnswerRequest.quetionId()).orElseThrow(()->new ClaimException("Claim Question not found with Id :"+claimAnswerRequest.quetionId()));
+        ClaimQuestion claimQuestion = claimQuestionRepository.findById(claimAnswerRequest.questionId()).orElseThrow(()->new ClaimException("Claim Question not found with Id :"+claimAnswerRequest.questionId()));
         ResumeClaim claim = claimQuestion.getResumeClaim();
         String prompt = claimVerificationPromptBuilder.buildAnswerEvaluationPrompt(claim.getClaim(),claimQuestion.getQuestion(),claimAnswerRequest.answer());
 
         ClaimAnswerEvaluation answerEvaluation = aiOrchasterator.evaluateClaimAnswer(prompt);
+
+        return answerEvaluation;
 
 
 
